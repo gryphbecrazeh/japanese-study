@@ -147,3 +147,4 @@ UPDATE user dictionary
 RETURN game dictionary
 # japanese-study
 # japanese-study
+# japanese-study
