@@ -145,6 +145,36 @@ UPDATE word global metrics
 UPDATE user dictionary
 
 RETURN game dictionary
-# japanese-study
-# japanese-study
-# japanese-study
+
+## IDEAS
+
+On register, redirect to questionaire
+
+Do you know hiragana?
+Do you know katakana?
+Ask profile details
+
+If not Hiragana and/or katakana, redirect to kana game
+
+## PROBLEMS
+
+-   Can not and should not store the entire dictionary item inside of the game, should instead get an array of word ids
+
+# Learned words table?
+
+-   User ID foreignID
+-   Verb ID foreignID
+-   Date Learned
+-   Times Right
+-   Times Wrong
+-   Should Know
+
+# Levels table?
+
+-   User ID foreignID
+-   Game ID foreignID
+-   Dictionary serialized array max length 10 only verb ids
+-   score int
+-   level int autoincrement
+-   highest streak
+-   top scores

@@ -1,8 +1,9 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 class CreateVerbsTable extends Migration
 {
@@ -16,13 +17,15 @@ class CreateVerbsTable extends Migration
         Schema::create('verbs', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->date('lastUpdated');
-            $table->string('meaning');
-            $table->string('politeForm');
-            $table->string('verbType');
-            $table->string('stem');
-            $table->string('meanings'); // Serialized Array
-            $table->string('kanji'); // Serialized Associative Array
+            $table->date('lastUpdated')->default(Carbon::now());
+            $table->string('meaning')->default('');
+            $table->string('politeForm')->default('');
+            $table->string('verbType')->default('');
+            $table->integer('timesWrong')->default(0);
+            $table->integer('timesRight')->default(0);
+            $table->string('stem')->default('');
+            $table->string('meanings')->serialize([]); // Serialized Array
+            $table->string('kanji')->serialize([]); // Serialized Associative Array
         });
     }
 

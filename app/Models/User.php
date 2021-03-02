@@ -20,8 +20,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'username',
-        'learnedWords'
+        'username'
     ];
 
     /**
@@ -42,4 +41,12 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime'
     ];
+    public function games()
+    {
+        return $this->hasMany(Game::class);
+    }
+    public function learnedWords()
+    {
+        return $this->hasMany(LearnedWord::class);
+    }
 }
