@@ -21,4 +21,14 @@ class Verb extends Model
         'meanings', // Serialized Array
         'kanji' // Serialized Associative Array
     ];
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'id',
+        'created_at',
+        'updated_at'
+    ];
 }

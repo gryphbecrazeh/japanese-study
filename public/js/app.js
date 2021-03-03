@@ -14055,12 +14055,6 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var Verb = __webpack_require__(/*! ./Verb */ "./resources/js/controllers/Verb.js")["default"];
@@ -14069,76 +14063,6 @@ var GAME_OBJ = function GAME_OBJ(STATICDICTIONARY) {
   var _this = this;
 
   _classCallCheck(this, GAME_OBJ);
-
-  this.loadSavedGame = function () {
-    // 
-    // 
-    // ## Local Storage
-    // 
-    var getLocalStorage = function getLocalStorage() {
-      var storageName = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : localStorageName;
-
-      var tempObj = _objectSpread({}, JSON.parse(localStorage.getItem(storageName)));
-
-      return tempObj;
-    }; // set up from localstorage
-
-
-    var oldGame = getLocalStorage();
-
-    if (oldGame && enableLocalStorage) {
-      GAME = _objectSpread({}, oldGame);
-    } // Depends on this.canSave
-
-
-    var _oldGane = oldGane,
-        score = _oldGane.score,
-        previousWord = _oldGane.previousWord,
-        targetVerb = _oldGane.targetVerb,
-        levels = _oldGane.levels,
-        levelActive = _oldGane.levelActive,
-        completeDictionary = _oldGane.completeDictionary;
-    _this.score = score;
-    _this.previousWord = previousWord;
-    _this.targetVerb = targetVerb;
-    _this.levels = levels;
-    _this.levelActive = levelActive;
-    _this.completeDictionary = completeDictionary;
-  };
-
-  this.saveGame = function () {
-    var setLocalStorage = function setLocalStorage() {
-      var storageName = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : localStorageName;
-      var statusObj = {
-        dictionary: dictionary,
-        answerDictionary: answerDictionary,
-        levels: levels,
-        levelActive: levelActive,
-        wordCount: GAME.wordCount(),
-        score: score
-      };
-      localStorage.setItem(storageName, JSON.stringify(statusObj));
-    }; // Depends on this.canSave
-
-
-    var gameSave = {
-      score: _this.score,
-      previousWord: _this.previousWord,
-      targetVerb: _this.targetVerb,
-      levels: _this.levels,
-      levelActive: _this.levelActive,
-      completeDictionary: _this.completeDictionary
-    };
-  };
-
-  this.deleteSavedGame = function () {
-    var removeLocalStorage = function removeLocalStorage() {
-      var storageName = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : localStorageName;
-      localStorage.removeItem(storageName);
-    };
-
-    removeLocalStorage();
-  };
 
   this.getScore = function () {
     return _this.score;
@@ -14193,24 +14117,19 @@ var GAME_OBJ = function GAME_OBJ(STATICDICTIONARY) {
   };
 
   this.wordCount = function () {
-    var _this$getLevelDiction;
+    var _this$getDictionary$l;
 
-    return (_this$getLevelDiction = _this.getLevelDictionary().length) !== null && _this$getLevelDiction !== void 0 ? _this$getLevelDiction : 0;
+    return (_this$getDictionary$l = _this.getDictionary().length) !== null && _this$getDictionary$l !== void 0 ? _this$getDictionary$l : 0;
   };
 
-  this.increaseLevel = function () {
-    _this.levelActive = _this.levelActive++;
-    _this.dictionary = _this.levels[_this.levelActive];
+  this.increaseLevel = function (callback) {// API CALL UPDATE GAME ON RETURN
   };
 
-  this.getLevelDictionary = function () {
-    return _this.levels[_this.levelActive];
+  this.getNewVerb = function (callback) {// API CALL UPDATE GAME ON RETURN
   };
 
-  this.updateLevelDictionary = function () {
-    return _this.levels[_this.levelActive] = [].concat(_toConsumableArray(_this.getLevelDictionary().filter(function (word) {
-      return word.kanji.word !== _this.getTargetVerb().kanji.word;
-    })), [_this.getTargetVerb()]);
+  this.getDictionary = function () {
+    return _this.dictionary;
   };
 
   this.resetTargetVerb = function () {
@@ -14221,14 +14140,8 @@ var GAME_OBJ = function GAME_OBJ(STATICDICTIONARY) {
     });
   };
 
-  this.getNewWords = function () {
-    return _toConsumableArray(_this.getLevelDictionary().filter(function (word) {
-      return !word.hasLearned;
-    }));
-  };
-
   this.getLearnedWords = function () {
-    return _toConsumableArray(_this.getLevelDictionary().filter(function (word) {
+    return _toConsumableArray(_this.getDictionary().filter(function (word) {
       return word.hasLearned;
     }));
   };
@@ -14245,10 +14158,6 @@ var GAME_OBJ = function GAME_OBJ(STATICDICTIONARY) {
     }));
   };
 
-  this.getRandomIndex = function (array) {
-    return Math.floor(Math.random() * Math.floor(array.length));
-  };
-
   this.getProbableDicitonary = function () {
     var dictionary = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
     var probability = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
@@ -14262,25 +14171,18 @@ var GAME_OBJ = function GAME_OBJ(STATICDICTIONARY) {
   };
 
   this.getRandomWord = function (callback) {
-    var learnedWords = _toConsumableArray(_this.getLearnedWords());
+    var learnedWords = _toConsumableArray(_this.getDictionary());
 
     var knownWords = _toConsumableArray(_this.getKnownWords());
 
-    var newWords = _toConsumableArray(_this.getNewWords());
-
-    var strugglingWords = _toConsumableArray(_this.getStrugglingWords()); // If there are no new words, all learned words are known by the user
+    var strugglingWords = _toConsumableArray(_this.getStrugglingWords()); // If all words are learned
 
 
-    if (!newWords.length > 0 && knownWords.length === learnedWords.length) _this.increaseLevel(); // If there are no learned words, or all learned words are known and there are still new words available for the round
+    if (knownWords.length === learnedWords.length && knownWords.length === 10) _this.increaseLevel(); // If there are no learned words, or all learned words are known and there are still new words available for the round
 
-    if ((!learnedWords.length > 0 || knownWords.length === learnedWords.length) && newWords.length > 0) {
+    if (learnedWords.length < 10 && knownWords.length === learnedWords.length) {
       //     grab a random word, and update the dictionary to update the word
-      var targetWord = new Verb(newWords[_this.getRandomIndex(newWords)]); // postAlert(
-      //     `New Word!, ${ targetWord.politeForm } means to ${ targetWord.meanings.join(
-      //         ", "
-      //     ) }`
-      // )
-
+      var targetWord = new Verb(_this.getNewVerb());
       targetWord.hasLearned = true;
 
       _this.setTargetVerb(targetWord);
@@ -14374,83 +14276,23 @@ var GAME_OBJ = function GAME_OBJ(STATICDICTIONARY) {
     _this.clearMeaningInput();
   };
 
-  this.success = function (callback) {
-    var targetVerb = _this.getTargetVerb();
-
-    targetVerb.increaseTimesCorrect();
-
-    _this.updateLevelDictionary();
-
-    _this.clearInputs();
-
-    _this.increaseScore();
-
-    _this.newTargetVerb();
-
-    _this.previousWord = targetVerb;
-    if (callback) callback();
-  };
-
-  this.fail = function (callback) {
-    var targetVerb = _this.getTargetVerb();
-
-    targetVerb.increaseTimesWrong();
-
-    _this.updateLevelDictionary();
-
-    _this.clearInputs();
-
-    _this.resetScore();
-
-    _this.newTargetVerb();
-
-    if (callback) callback();
-  };
-
   if (!STATICDICTIONARY) {
     alert('No Static Dictionary...');
     return 0;
   }
 
-  this.canSave = 0; // check if local storage is available
-
   this.score = 0;
   this.previousWord = {};
   this.targetVerb = null;
+  this.dictionary = STATICDICTIONARY;
   this.userInput = null;
   this.userHiragana = null;
   this.userMeaning = null;
   this.targetModes = ["politeForm", "meaning", "rePoliteForm"];
   this.targetModeActive = "meaning";
-
-  var handleGetChunks = function handleGetChunks() {
-    var array = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-    var chunkSize = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 10;
-    array = _toConsumableArray(array);
-    var chunks = [];
-    var totalChunks = Math.floor(array.length / chunkSize);
-    var remaining = array.length / chunkSize;
-
-    for (var i = 0; i < totalChunks; i++) {
-      chunks.push(array.splice(0, chunkSize));
-    }
-
-    chunks.push(array.splice(0, remaining));
-    return [].concat(chunks);
-  };
-
-  this.levels = _toConsumableArray(handleGetChunks(STATICDICTIONARY));
-  this.levelActive = 0;
-  this.completeDictionary = _toConsumableArray(STATICDICTIONARY); // Answer Dictionary - contains all words
-
-  this.dictionary = _toConsumableArray(this.levels[this.levelActive]); // User dictionary - only contains words the user has been delegated
-
-  this.answerDictionary = _toConsumableArray(this.completeDictionary); // Answer Dictionary - contains all words
-
-  this.modeActive = "study";
 } // 
 // 
-// Data-persistance
+// Score
 ;
 
 
@@ -14669,6 +14511,8 @@ var _default = /*#__PURE__*/function (_Controller) {
           }
         });
       };
+
+      $('#autokana').autokana();
     }
   }]);
 
@@ -14973,343 +14817,7 @@ var _default = /*#__PURE__*/function (_Controller) {
       // Handle Cookies to keep record
 
       var enableLocalStorage = false;
-      var localStorageName = "nihongo study"; // class Verb
-      // {
-      //     constructor ( {
-      //         meaning = "",
-      //         meanings = [],
-      //         rePoliteForm = "",
-      //         politeForm = "",
-      //         kanji = {
-      //             word: "",
-      //             meaning: ""
-      //         },
-      //         hasLearned,
-      //         shouldKnow,
-      //         timesWrong,
-      //         timesRight
-      //     } )
-      //     {
-      //         this.timesWrongOffset = 3
-      //         //     change to array of meanings, allow for comma separated entries for multiple meanings and multiple points
-      //         this.meanings = meanings || null
-      //         this.meaning = meaning || null
-      //         this.politeForm = politeForm || null
-      //         this.rePoliteForm = rePoliteForm || null
-      //         this.hasLearned = hasLearned || false
-      //         this.shouldKnow = shouldKnow || false
-      //         this.timesWrong = timesWrong || 0
-      //         this.timesRight = timesRight || 0
-      //         this.kanji = kanji
-      //     }
-      //     increaseTimesCorrect = ( callback ) =>
-      //     {
-      //         this.timesRight++
-      //         if ( !this.hasLearned ) this.toggleLearned()
-      //         if (
-      //             this.timesRight >
-      //             0 + this.timesWrong + this.timesWrongOffset &&
-      //             !this.shouldKnow
-      //         )
-      //         {
-      //             this.toggleKnown()
-      //         }
-      //         if ( callback ) return callback( this )
-      //     }
-      //     increaseTimesWrong = ( callback ) =>
-      //     {
-      //         this.timesWrong++
-      //         if ( this.shouldKnow ) this.toggleKnown()
-      //         if ( callback ) return callback( this )
-      //     }
-      //     toggleKnown = () => this.shouldKnow = !this.shouldKnow
-      //     toggleLearned = () => this.hasLearned = !this.hasLearned
-      // }
-      // class GAME_OBJ 
-      // {
-      //     constructor ( STATICDICTIONARY )
-      //     {
-      //         if ( !STATICDICTIONARY )
-      //         {
-      //             alert( 'No Static Dictionary...' )
-      //             return 0
-      //         }
-      //         this.canSave = 0 // check if local storage is available
-      //         this.score = 0
-      //         this.previousWord = {}
-      //         this.targetVerb = null
-      //         this.userInput = null
-      //         this.userHiragana = null
-      //         this.userMeaning = null
-      //         this.targetModes = [ "politeForm", "meaning", "rePoliteForm" ]
-      //         this.targetModeActive = "meaning"
-      //         let handleGetChunks = ( array = [], chunkSize = 10 ) =>
-      //         {
-      //             array = [ ...array ]
-      //             let chunks = []
-      //             let totalChunks = Math.floor( array.length / chunkSize )
-      //             let remaining = array.length / chunkSize
-      //             for ( let i = 0; i < totalChunks; i++ )
-      //             {
-      //                 chunks.push( array.splice( 0, chunkSize ) )
-      //             }
-      //             chunks.push( array.splice( 0, remaining ) )
-      //             return [ ...chunks ]
-      //         }
-      //         this.levels = [ ...handleGetChunks( STATICDICTIONARY ) ]
-      //         this.levelActive = 0
-      //         this.completeDictionary = [ ...STATICDICTIONARY ] // Answer Dictionary - contains all words
-      //         this.dictionary = [ ...this.levels[ this.levelActive ] ] // User dictionary - only contains words the user has been delegated
-      //         this.answerDictionary = [ ...this.completeDictionary ] // Answer Dictionary - contains all words
-      //         this.modeActive = "study"
-      //     }
-      //     // 
-      //     // 
-      //     // Data-persistance
-      //     loadSavedGame = () =>
-      //     {
-      //         // 
-      //         // 
-      //         // ## Local Storage
-      //         // 
-      //         let getLocalStorage = ( storageName = localStorageName ) =>
-      //         {
-      //             let tempObj = {
-      //                 ...JSON.parse( localStorage.getItem( storageName ) )
-      //             }
-      //             return tempObj
-      //         }
-      //         // set up from localstorage
-      //         let oldGame = getLocalStorage()
-      //         if ( oldGame && enableLocalStorage )
-      //         {
-      //             GAME = { ...oldGame }
-      //         }
-      //         // Depends on this.canSave
-      //         let {
-      //             score,
-      //             previousWord,
-      //             targetVerb,
-      //             levels,
-      //             levelActive,
-      //             completeDictionary
-      //         } = oldGane
-      //         this.score = score
-      //         this.previousWord = previousWord
-      //         this.targetVerb = targetVerb
-      //         this.levels = levels
-      //         this.levelActive = levelActive
-      //         this.completeDictionary = completeDictionary
-      //     }
-      //     saveGame = () =>
-      //     {
-      //         let setLocalStorage = ( storageName = localStorageName ) =>
-      //         {
-      //             let statusObj = {
-      //                 dictionary: dictionary,
-      //                 answerDictionary: answerDictionary,
-      //                 levels: levels,
-      //                 levelActive: levelActive,
-      //                 wordCount: GAME.wordCount(),
-      //                 score: score
-      //             }
-      //             localStorage.setItem( storageName, JSON.stringify( statusObj ) )
-      //         }
-      //         // Depends on this.canSave
-      //         let gameSave = {
-      //             score: this.score,
-      //             previousWord: this.previousWord,
-      //             targetVerb: this.targetVerb,
-      //             levels: this.levels,
-      //             levelActive: this.levelActive,
-      //             completeDictionary: this.completeDictionary
-      //         }
-      //     }
-      //     deleteSavedGame = () =>
-      //     {
-      //         let removeLocalStorage = ( storageName = localStorageName ) =>
-      //         {
-      //             localStorage.removeItem( storageName )
-      //         }
-      //         removeLocalStorage()
-      //     }
-      //     // 
-      //     // 
-      //     // Score
-      //     getScore = () => this.score
-      //     increaseScore = () => this.score += 1
-      //     resetScore = () => this.score = 0
-      //     // 
-      //     // 
-      //     // API
-      //     kanjiAlive = () =>
-      //     {
-      //         // Comment this out?
-      //         let getKanjiMeaning = async ( kanji ) =>
-      //         {
-      //             if ( !kanji ) return 0
-      //             let apiQuery = `https://kanjialive-api.p.rapidapi.com/api/public/search/${ kanji }`
-      //             let result = fetch( 'http://example.com/movies.json' )
-      //                 .then( response => response.json() )
-      //                 .then( data => console.log( data ) )
-      //         }
-      //         getKanjiMeaning( "勉" )
-      //     }
-      //     wordCount = () => this.getLevelDictionary().length ?? 0
-      //     // Levels
-      //     increaseLevel = () =>
-      //     {
-      //         this.levelActive = this.levelActive++
-      //         this.dictionary = this.levels[ this.levelActive ]
-      //     }
-      //     getLevelDictionary = () => this.levels[ this.levelActive ]
-      //     updateLevelDictionary = () => this.levels[ this.levelActive ] = [ ...this.getLevelDictionary().filter( word => word.kanji.word !== this.getTargetVerb().kanji.word ), this.getTargetVerb() ]
-      //     resetTargetVerb = () => this.targetVerb = new Verb( { meaning: "", politeForm: "", rePoliteForm: "" } )
-      //     // Word lists
-      //     // 
-      //     // 
-      //     // No Experience
-      //     getNewWords = () => [ ...this.getLevelDictionary().filter( word => !word.hasLearned ) ]
-      //     // 
-      //     // 
-      //     // Minimal Experience
-      //     getLearnedWords = () => [ ...this.getLevelDictionary().filter( word => word.hasLearned ) ]
-      //     // 
-      //     // 
-      //     // Significant Experience
-      //     getKnownWords = () => [ ...this.getLearnedWords().filter( word => word.shouldKnow ) ]
-      //     // 
-      //     // 
-      //     // Struggling
-      //     getStrugglingWords = () => [ ...this.getLearnedWords().filter( word => !word.timesRight > word.timesWrong ) ]
-      //     getRandomIndex = array =>
-      //     {
-      //         return Math.floor( Math.random() * Math.floor( array.length ) )
-      //     }
-      //     getProbableDicitonary = ( dictionary = [], probability = 0 ) =>
-      //     {
-      //         let resultDictionary = []
-      //         for ( let i = 0; i < probability; i++ )
-      //         {
-      //             resultDictionary.push( ...dictionary )
-      //         }
-      //         return resultDictionary
-      //     }
-      //     getRandomWord = ( callback ) =>
-      //     {
-      //         let learnedWords = [ ...this.getLearnedWords() ]
-      //         let knownWords = [ ...this.getKnownWords() ]
-      //         let newWords = [ ...this.getNewWords() ]
-      //         let strugglingWords = [ ...this.getStrugglingWords() ]
-      //         // If there are no new words, all learned words are known by the user
-      //         if ( !newWords.length > 0 && knownWords.length === learnedWords.length )
-      //             this.increaseLevel()
-      //         // If there are no learned words, or all learned words are known and there are still new words available for the round
-      //         if (
-      //             ( !learnedWords.length > 0 || knownWords.length === learnedWords.length ) &&
-      //             newWords.length > 0
-      //         )
-      //         {
-      //             //     grab a random word, and update the dictionary to update the word
-      //             let targetWord = new Verb( newWords[ this.getRandomIndex( newWords ) ] )
-      //             postAlert(
-      //                 `New Word!, ${ targetWord.politeForm } means to ${ targetWord.meanings.join(
-      //                     ", "
-      //                 ) }`
-      //             )
-      //             targetWord.hasLearned = true
-      //             this.setTargetVerb( targetWord )
-      //             this.updateLevelDictionary()
-      //             if ( callback )
-      //             {
-      //                 callback( targetWord )
-      //             }
-      //             return targetWord
-      //         }
-      //         //     End Get New Word
-      //         // Establish probabilities of certain words, then do something absurd to create probabilities
-      //         let probabilities = {
-      //             known: 10,
-      //             learned: 40,
-      //             struggling: 50
-      //         }
-      //         let probableDictionary = [
-      //             ...this.getProbableDicitonary( learnedWords, probabilities.learned ),
-      //             ...this.getProbableDicitonary( knownWords, probabilities.known ),
-      //             ...this.getProbableDicitonary( strugglingWords, probabilities.struggling )
-      //         ]
-      //         // Filter out previous word from probable dicitonary
-      //         if ( learnedWords.length > 1 && this.previousWord )
-      //         {
-      //             probableDictionary = probableDictionary.filter(
-      //                 word => word.kanji.word != this.previousWord.kanji.word
-      //             )
-      //         }
-      //         let randWord = probableDictionary[ this.getRandomIndex( probableDictionary ) ]
-      //         if ( randWord != null ) return randWord
-      //     }
-      //     // Temporary Verb
-      //     getTargetVerb = () => this.targetVerb
-      //     setTargetVerb = newVerb => this.targetVerb = new Verb( newVerb )
-      //     newTargetVerb = () =>
-      //     {
-      //         return this.setTargetVerb( this.getRandomWord() )
-      //     }
-      //     // 
-      //     // 
-      //     // User input
-      //     getUserInput = () => this.userInput
-      //     setUserInput = input => this.userInput = input
-      //     clearUserInput = () => this.userInput = null
-      //     // 
-      //     // 
-      //     // User Hiragana
-      //     getHiraganaInput = () => this.userHiragana
-      //     setHiraganaInput = () =>
-      //     {
-      //         this.userHiragana = this.userInput
-      //         this.clearUserInput()
-      //     }
-      //     clearHiraganaInput = () => this.userHiragana = null
-      //     // 
-      //     // 
-      //     // User Meaning
-      //     getMeaningInput = () => this.userMeaning
-      //     setMeaningInput = () =>
-      //     {
-      //         this.userMeaning = this.userInput
-      //         this.clearUserInput()
-      //     }
-      //     clearMeaningInput = () => this.userMeaning = null
-      //     clearInputs = () =>
-      //     {
-      //         this.clearUserInput()
-      //         this.clearHiraganaInput()
-      //         this.clearMeaningInput()
-      //     }
-      //     success = ( callback ) =>
-      //     {
-      //         let targetVerb = this.getTargetVerb()
-      //         targetVerb.increaseTimesCorrect()
-      //         this.updateLevelDictionary()
-      //         this.clearInputs()
-      //         this.increaseScore()
-      //         this.newTargetVerb()
-      //         this.previousWord = targetVerb
-      //         if ( callback ) callback()
-      //     }
-      //     fail = ( callback ) =>
-      //     {
-      //         let targetVerb = this.getTargetVerb()
-      //         targetVerb.increaseTimesWrong()
-      //         this.updateLevelDictionary()
-      //         this.clearInputs()
-      //         this.resetScore()
-      //         this.newTargetVerb()
-      //         if ( callback ) callback()
-      //     }
-      // }
-
+      var localStorageName = "nihongo study";
       var GAME = new GAME_OBJ(STATICDICTIONARY); // Change the main display to the text
 
       var setDisplay = function setDisplay(text) {
@@ -15413,8 +14921,8 @@ var _default = /*#__PURE__*/function (_Controller) {
         renewInput(); //Not sure the purpose of this, it replaces the existing input node with a new intance, think it has to do with autokana, and dynamically entering it
         //   If there are no words available to study, prompt the user to enter verbs
 
-        if (!GAME.getLevelDictionary().length > 0) {
-          setDisplay("Please enter words into the dictionary to study...");
+        if (!STATICDICTIONARY.length > 0) {
+          setDisplay("An error has occurred, can't GET dictionary...");
           disableInputs();
           return 0;
         }

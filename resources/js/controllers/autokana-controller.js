@@ -361,5 +361,6 @@ export default class extends Controller
                 }
             } )
         }
+        $( '#autokana' ).autokana()
     }
 } 

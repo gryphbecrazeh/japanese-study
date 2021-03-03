@@ -5,9 +5,10 @@
                 class="w-full relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center sm:pt-0">
                 <x-layout.card>
                     @php
-                        dd($dictionary);
+                        $game = $game->toArray();
+                        
                     @endphp
-                    <x-game />
+                    <x-Game :game="$game" />
                 </x-layout.card>
             </x-layout.col>
         </x-layout.row>

@@ -44,6 +44,7 @@ Route::prefix('/game')->group(function () {
     Route::get('/', [GameController::class, 'index'])->name('game'); // GAME DASHBOARD, SCROLL THROUGH AVAILABLE GAMES
     Route::get('/kana', [GameController::class, 'index'])->name('game.kana'); // KANA OFFER NEW GAME OR CONTINUE GAME PRACTICE HIRAGANA AND KATAKANA CHARACTERS
     Route::get('/verb', [GameController::class, 'index'])->name('game.verb'); // VERB OFFER NEW GAME OR CONTINUE GAME PRACTICE VERBS
+    Route::post('/verb/{game_id}', [GameController::class, 'store'])->name('game.verb.post'); // VERB OFFER NEW GAME OR CONTINUE GAME PRACTICE VERBS
     Route::get('/adjective', [GameController::class, 'index'])->name('game.adjective'); // ADJECTIVE OFFER NEW GAME OR CONTINUE GAME PRACTICE ADJECTIVES
     Route::get('/noun', [GameController::class, 'index'])->name('game.noun'); // NOUN OFFER NEW GAME OR CONTINUE GAME PRACTICE NOUNS
     Route::get('/kanji', [GameController::class, 'index'])->name('game.kanji'); // KANJI CHALLENGE OFFER NEW GAME OR CONTINUE GAME PRACTICE ONE KANJI CHARACTER, PULL ALL WORDS CONTAINING THAT CHARACTER NOUN AND VERB
