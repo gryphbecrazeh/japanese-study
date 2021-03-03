@@ -22,6 +22,11 @@ class CreateLevelsTable extends Migration
             $table->integer('level')->default(0);
             $table->integer('highestStreak')->default(0);
             $table->integer('topScore')->default(0);
+            $table->string('targetWord')->nullable()->default(null);
+            $table->string('userTargetWord')->nullable()->default(null);
+            $table->string('inputMode')->default('kana');
+            $table->string('kana')->default('');
+            $table->string('meanings')->default('');
         });
     }
 

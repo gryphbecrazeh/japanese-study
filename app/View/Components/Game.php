@@ -2,6 +2,8 @@
 
 namespace App\View\Components;
 
+use App\Game\Game as G;
+use App\Models\Verb;
 use Illuminate\View\Component;
 
 class Game extends Component
@@ -11,31 +13,16 @@ class Game extends Component
      *
      * @return void
      */
-    public $gameId;
+    public $game;
     public $targetWord;
-    public $userTargetWord;
-    public $dictionary = [];
-    public $score = 0;
-    public $level = 0;
-    public $highestStreak = 0;
-    public $topScore = 0;
-    public $shouldKnow = false;
-    public function __construct($game)
+    public function __construct()
     {
-        $dictionary = collect($game['dictionary'])->map(function ($word) {
-            $word->meanings = [...unserialize($word->meanings)];
-            $word->kanji = unserialize($word->kanji);
-            return $word;
-        });
-        $this->targetWord = $dictionary[array_rand($dictionary->toArray(), 1)];
-        $this->userTargetWord = auth()->user()->learnedWords()->where('verb_id', '=', $this->targetWord->id)->limit(1)->get()->first();
-        $this->gameId = $game['id'];
-        $this->dictionary = $game['dictionary'];
-        $this->score = $game['score'];
-        $this->level = $game['level'];
-        $this->highestStreak = $game['highestStreak'];
-        $this->topScore = $game['topScore'];
-        $this->shouldKnow = false;
+        $this->game = app(G::class);
+        // dd($this->game);
+        $targetWord = Verb::where('id', '=', $this->game->targetWord)->limit(1)->get()->first();
+        $targetWord->meanings = unserialize($targetWord->meanings);
+        $targetWord->kanji = unserialize($targetWord->kanji);
+        $this->targetWord = $targetWord;
     }
 
     /**
@@ -46,15 +33,15 @@ class Game extends Component
     public function render()
     {
         return view('components.game', [
-            'id' => $this->gameId,
-            'dictionary' => $this->dictionary,
-             'score' => $this->score,
-              'level' => $this->level,
-               'highestStreak' => $this->highestStreak,
-                'topScore' => $this->topScore,
+            'id' => $this->game->gameId,
+            'dictionary' => $this->game->dictionary,
+             'score' => $this->game->score,
+              'level' => $this->game->level,
+               'highestStreak' => $this->game->highestStreak,
+                'topScore' => $this->game->topScore,
                 'targetWord' => $this->targetWord,
-                'userTargetWord' => $this->userTargetWord,
-                'targetMode' => 'politeForm'
+                'userTargetWord' => $this->game->userTargetWord,
+                'inputMode' => $this->game->inputMode
                  ]);
     }
 }

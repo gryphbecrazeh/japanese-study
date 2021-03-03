@@ -1,5 +1,4 @@
 @php
-// dd($targetWord);
 @endphp
 
 <div class="container w-full flex flex-col justify-center items-center" data-controller="autokana">
@@ -22,7 +21,9 @@
     <form action="{{ route('game.verb.post', ['game_id' => $id]) }}" method="POST">
         @csrf
         <div class="bg-gray-100 rounded-lg w-full">
-            <input type="text" id="autokana" class="p-2 input w-full h-100" placeholder="Enter the verb...">
+            <input name="{{ $inputMode }}" type="text" id="{{ $inputMode === 'kana' ? 'autokana' : 'standard' }}"
+                class="p-2 input w-full h-100"
+                placeholder="{{ $inputMode === 'kana' ? 'Enter the verb...' : 'Translate Below' }}">
         </div>
         <div class="py-4">
             <div class="flex flex-row gap-2 justify-evenly">

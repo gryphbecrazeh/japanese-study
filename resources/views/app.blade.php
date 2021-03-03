@@ -4,10 +4,6 @@
             <x-layout.col
                 class="w-full relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center sm:pt-0">
                 <x-layout.card>
-                    @php
-                        $game = $game->toArray();
-                        
-                    @endphp
                     <x-Game :game="$game" />
                 </x-layout.card>
             </x-layout.col>
