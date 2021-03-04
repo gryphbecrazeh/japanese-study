@@ -31,4 +31,14 @@ class Verb extends Model
         'created_at',
         'updated_at'
     ];
+    public function increaseTimesRight()
+    {
+        $this->timesRight++;
+        $this->save();
+    }
+    public function increaseTimesWrong()
+    {
+        $this->timesWrong++;
+        $this->save();
+    }
 }

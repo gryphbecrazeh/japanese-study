@@ -8,10 +8,11 @@
             <div class="flex gap-2">
                 <p>Level: {{ $level + 1 }}</p>
                 <p>Score: {{ $score }}</p>
+                <p>Streak: {{ $streak }}</p>
                 <p>Word Count:{{ count($dictionary) }}</p>
             </div>
             <div class="flex flex-col justify-center text-center">
-                <p>Please enter</p>
+                <p>{{ $inputMode === 'kana' ? 'Enter the following' : 'Translate the following' }}</p>
                 <p class="kanji">{{ $targetWord->kanji['word'] }}</p>
                 <p>{{ $targetWord->shouldKnow ? 'You should know this...' : $targetWord->politeForm }}
                 </p>

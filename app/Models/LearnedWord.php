@@ -34,4 +34,14 @@ class LearnedWord extends Model
      */
     protected $casts = [
     ];
+    public function increaseTimesRight()
+    {
+        $this->timesRight++;
+        $this->save();
+    }
+    public function increaseTimesWrong()
+    {
+        $this->timesWrong++;
+        $this->save();
+    }
 }

@@ -15,7 +15,6 @@ class Game
     public $gameId;
     public $inputMode;
     public $targetWord;
-    public $userTargetWord;
     public $dictionary = [];
     public $score = 0;
     public $level = 0;
@@ -71,11 +70,12 @@ class Game
             $word->kanji = unserialize($word->kanji);
             return $word;
         });
+
         $this->targetWord = $game['targetWord'] ?? $learnedDictionary[array_rand($learnedDictionary, 1)];
-        $this->userTargetWord = auth()->user()->learnedWords()->where('verb_id', '=', $this->targetWord)->limit(1)->get()->first();
         $this->gameId = $game['id'];
         $this->dictionary = $game['dictionary'];
         $this->score = $game['score'];
+        $this->streak = $game['streak'];
         $this->level = $game['level'];
         $this->highestStreak = $game['highestStreak'];
         $this->topScore = $game['topScore'];
@@ -104,7 +104,6 @@ class Game
         $game = auth()->user()->games()->where('id', '=', $this->gameId)->orderBy('updated_at', 'desc')->limit(1)->get()->first();
         $game = $game->levels()->orderBy('updated_at', 'desc')->limit(1)->get()->first();
         $game->targetWord = $this->targetWord;
-        $game->userTargetWord=$this->userTargetWord;
         $game->score=$this->score;
         $game->level=$this->level;
         $game->highestStreak=$this->highestStreak;

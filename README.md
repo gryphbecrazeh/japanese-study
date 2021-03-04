@@ -158,23 +158,6 @@ If not Hiragana and/or katakana, redirect to kana game
 
 ## PROBLEMS
 
--   Can not and should not store the entire dictionary item inside of the game, should instead get an array of word ids
-
-# Learned words table?
-
--   User ID foreignID
--   Verb ID foreignID
--   Date Learned
--   Times Right
--   Times Wrong
--   Should Know
-
-# Levels table?
-
--   User ID foreignID
--   Game ID foreignID
--   Dictionary serialized array max length 10 only verb ids
--   score int
--   level int autoincrement
--   highest streak
--   top scores
+-   The first go around for the game fails, I believe it's related to getting the dictionary set up for the user, refreshing once or twice seems to fix it
+-   The first go around doesn't prompt for the meaning, and makes the user type in the kana for each word before moving onto the meaning, I may have to wrap the word getter in the meaning check, since that entire procedure depends on that
+-   When checking the meaning, attempting to get a new word occasionally ends up with 0, may be related to mastered_words being empty, maybe remove all empty arrays, will require re-evalutating the random dictionary ODDS setup to be dynamic, based on the existing words

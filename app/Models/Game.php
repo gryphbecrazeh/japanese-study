@@ -31,8 +31,14 @@ class Game extends Model
      */
     protected $casts = [
     ];
+
     public function levels()
     {
         return  $this->hasMany(Level::class);
     }
+    // Get topscore of all levels
+   
+    // Get top streak of all levels
+
+    // increaseLevel
 }

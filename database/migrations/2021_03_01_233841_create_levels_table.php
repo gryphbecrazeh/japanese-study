@@ -18,9 +18,10 @@ class CreateLevelsTable extends Migration
             $table->timestamps();
             $table->foreignId('game_id')->constrained()->onDelete('cascade');
             $table->string('dictionary')->default(serialize([]));
-            $table->integer('score')->default(0);
             $table->integer('level')->default(0);
+            $table->integer('streak')->default(0);
             $table->integer('highestStreak')->default(0);
+            $table->integer('score')->default(0);
             $table->integer('topScore')->default(0);
             $table->string('targetWord')->nullable()->default(null);
             $table->string('userTargetWord')->nullable()->default(null);

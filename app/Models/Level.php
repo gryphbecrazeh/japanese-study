@@ -31,4 +31,50 @@ class Level extends Model
      */
     protected $casts = [
     ];
+    public function setTopScore()
+    {
+        $this->topScore = $this->score;
+        $this->save;
+    }
+    public function setTopStreak()
+    {
+        $this->topStreak = $this->streak;
+        $this->save;
+    }
+    public function increaseScore()
+    {
+        $this->score++;
+        if ($this->score > $this->topScore) {
+            $this->setTopScore();
+        }
+        $this->save;
+    }
+    public function resetScore()
+    {
+        $this->score = 0;
+        $this->save;
+    }
+    public function increaseStreak()
+    {
+        $this->streak++;
+        $this->save;
+        if ($this->streak > $this->topStreak) {
+            $this->setTopStreak();
+        }
+    }
+    public function resetStreak()
+    {
+        $this->streak=0;
+        $this->save;
+    }
+    public function setTargetWord($verb)
+    {
+        $this->targetWord = $verb->verb_id;
+        $this->save();
+    }
+    public function setInputMode($mode)
+    {
+        $this->inputMode = $mode;
+        $this->save();
+    }
 }

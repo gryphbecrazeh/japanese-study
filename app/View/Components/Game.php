@@ -36,11 +36,11 @@ class Game extends Component
             'id' => $this->game->gameId,
             'dictionary' => $this->game->dictionary,
              'score' => $this->game->score,
+             'streak' => $this->game->streak,
               'level' => $this->game->level,
                'highestStreak' => $this->game->highestStreak,
                 'topScore' => $this->game->topScore,
                 'targetWord' => $this->targetWord,
-                'userTargetWord' => $this->game->userTargetWord,
                 'inputMode' => $this->game->inputMode
                  ]);
     }
