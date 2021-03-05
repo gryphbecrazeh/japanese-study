@@ -18,10 +18,6 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         //
-        $this->app->singleton(Game::class, function ($app) {
-            //
-            return new Game();
-        });
     }
 
     /**
@@ -32,5 +28,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         //
+        $this->app->singleton(Game::class, function ($app) {
+            return new Game();
+        });
     }
 }

@@ -20,7 +20,7 @@ class CreateLevelsTable extends Migration
             $table->string('dictionary')->default(serialize([]));
             $table->integer('level')->default(0);
             $table->integer('streak')->default(0);
-            $table->integer('highestStreak')->default(0);
+            $table->integer('topStreak')->default(0);
             $table->integer('score')->default(0);
             $table->integer('topScore')->default(0);
             $table->string('targetWord')->nullable()->default(null);

@@ -18,7 +18,6 @@ class Game extends Component
     public function __construct()
     {
         $this->game = app(G::class);
-        // dd($this->game);
         $targetWord = Verb::where('id', '=', $this->game->targetWord)->limit(1)->get()->first();
         $targetWord->meanings = unserialize($targetWord->meanings);
         $targetWord->kanji = unserialize($targetWord->kanji);
@@ -34,11 +33,11 @@ class Game extends Component
     {
         return view('components.game', [
             'id' => $this->game->gameId,
-            'dictionary' => $this->game->dictionary,
+            'dictionary' => unserialize($this->game->dictionary),
              'score' => $this->game->score,
              'streak' => $this->game->streak,
               'level' => $this->game->level,
-               'highestStreak' => $this->game->highestStreak,
+               'topStreak' => $this->game->topStreak,
                 'topScore' => $this->game->topScore,
                 'targetWord' => $this->targetWord,
                 'inputMode' => $this->game->inputMode

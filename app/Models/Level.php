@@ -31,6 +31,7 @@ class Level extends Model
      */
     protected $casts = [
     ];
+
     public function setTopScore()
     {
         $this->topScore = $this->score;
@@ -76,5 +77,16 @@ class Level extends Model
     {
         $this->inputMode = $mode;
         $this->save();
+    }
+    public function setUserInput($target, $value)
+    {
+        $updatedInput =  $this->userInput;
+        $updatedInput[$target] = $value;
+        $this->userInput = $updatedInput;
+        return $this->userInput;
+    }
+    public function clearUserInput()
+    {
+        dd($this);
     }
 }

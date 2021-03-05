@@ -156,8 +156,17 @@ Ask profile details
 
 If not Hiragana and/or katakana, redirect to kana game
 
+add front end support for messages
+
+## TODO
+
+Add level support
+
 ## PROBLEMS
 
--   The first go around for the game fails, I believe it's related to getting the dictionary set up for the user, refreshing once or twice seems to fix it
--   The first go around doesn't prompt for the meaning, and makes the user type in the kana for each word before moving onto the meaning, I may have to wrap the word getter in the meaning check, since that entire procedure depends on that
+-   FIXED -- The first go around for the game fails, I believe it's related to getting the dictionary set up for the user, refreshing once or twice seems to fix it
+-   FIXED -- The first go around doesn't prompt for the meaning, and makes the user type in the kana for each word before moving onto the meaning, I may have to wrap the word getter in the meaning check, since that entire procedure depends on that
 -   When checking the meaning, attempting to get a new word occasionally ends up with 0, may be related to mastered_words being empty, maybe remove all empty arrays, will require re-evalutating the random dictionary ODDS setup to be dynamic, based on the existing words
+-   FIXED -- Word count isn't displaying word count
+-   FIXED -- It MAY be duplicating words when adding them to the learned word list, yeah it definitely loads it in twice
+-   Service provider returns blank page at first, auth()->user() returns null, meaning it can't progress
