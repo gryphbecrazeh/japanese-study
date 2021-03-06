@@ -170,3 +170,4 @@ Add level support
 -   FIXED -- Word count isn't displaying word count
 -   FIXED -- It MAY be duplicating words when adding them to the learned word list, yeah it definitely loads it in twice
 -   Service provider returns blank page at first, auth()->user() returns null, meaning it can't progress
+-   Word count doesn't update on increasing words, but word does re-appear

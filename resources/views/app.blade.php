@@ -1,9 +1,10 @@
 <x-wrapper>
-    <x-layout.container class="">
-        <x-layout.row class="">
+    <x-MessageContainer :message="$message ?? ''" />
+    <x-layout.container>
+        <x-layout.row>
             <x-layout.col
-                class="w-full relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center sm:pt-0">
-                <x-layout.card>
+                class="gap-2 w-full h-full relative flex  flex-col items-top justify-center sm:items-center sm:pt-0">
+                <x-layout.card class="bg-smoke-300 ">
                     <x-Game />
                 </x-layout.card>
             </x-layout.col>

@@ -4,6 +4,7 @@ namespace App\Game;
 use App\Models\Verb;
 use App\Models\Level;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class Game
 {
@@ -25,6 +26,7 @@ class Game
     public function __construct()
     {
         if (is_null(auth()->user())) {
+            // This attempt to redirect isn't working, it just straight up fails because there is no user to authorize when this is initially ran
             return redirect(route('home'));
         }
         $learnedWords = collect(auth()->user()->learnedWords) ?? collect([]);
@@ -32,7 +34,9 @@ class Game
         $learnedDictionary = $learnedWords->map(function ($word) {
             return $word->verb_id;
         })->toArray();
+
         $game = null;
+
         $games = auth()->user()->games;
         // If there are no previous games, create a new game and level, and apply the dictionary
         if (!count($games)>=1) {
@@ -86,6 +90,52 @@ class Game
             'meanings' =>$game['meanings'] ?? ''
         ];
     }
+    public function getCorrectKanaMessage(Verb $verb = null)
+    {
+        $message = [
+            'type'=>'success',
+            'value'=>null
+        ];
+        $kanji = unserialize($verb->kanji);
+        $message['value'] = "Correct! " . $kanji['word'] . " is " . $verb->politeForm;
+
+        return  $message;
+    }
+    public function getWrongKanaMessage(Verb $verb = null)
+    {
+        $message = [
+            'type'=>'success',
+            'value'=>null
+        ];
+        $kanji = unserialize($verb->kanji);
+        $message['value'] = "Sorry! Please try again...";// . $kanji['word'] . " is " . $verb->politeForm;
+
+        return  $message;
+    }
+
+    public function getCorrectMeaningMessage(Verb $verb = null)
+    {
+        $message = [
+            'type'=>'success',
+            'value'=>null
+        ];
+        $kanji = unserialize($verb->kanji);
+        $message['value'] = "Correct! " . $kanji['word'] . " means " . $verb->meaning;
+
+        return  $message;
+    }
+    public function getNewWordMessage($verb = null)
+    {
+        $message = [
+            'type'=>'success',
+            'value'=>null
+        ];
+        $kanji = unserialize($verb['kanji']);
+        $message['value'] = "New Word! " . $kanji['word'] . " means " . $verb['meaning'];
+
+        return  $message;
+    }
+
 
     public function setTopScore()
     {
@@ -141,6 +191,7 @@ class Game
     {
         $game = auth()->user()->games()->where('id', '=', $this->gameId)->orderBy('updated_at', 'desc')->limit(1)->get()->first();
         $game = $game->levels()->orderBy('updated_at', 'desc')->limit(1)->get()->first();
+        $game-> dictionary = $this->dictionary;
         $game->targetWord = $this->targetWord;
         $game->level=$this->level;
         $game->streak=$this->streak;

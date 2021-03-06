@@ -3,6 +3,7 @@
 namespace App\View\Components;
 
 use App\Game\Game as G;
+use App\Models\LearnedWord;
 use App\Models\Verb;
 use Illuminate\View\Component;
 
@@ -21,6 +22,7 @@ class Game extends Component
         $targetWord = Verb::where('id', '=', $this->game->targetWord)->limit(1)->get()->first();
         $targetWord->meanings = unserialize($targetWord->meanings);
         $targetWord->kanji = unserialize($targetWord->kanji);
+        $targetWord->shouldKnow = LearnedWord::where('verb_id', '=', $targetWord->id)->limit(1)->get()->first()->shouldKnow;
         $this->targetWord = $targetWord;
     }
 

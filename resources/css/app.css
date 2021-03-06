@@ -3,9 +3,15 @@ html {
   line-height: 1.15;
   -webkit-text-size-adjust: 100%; }
 
+.message .success {
+  background-color: white; }
+
 body {
   margin: 0;
   font-family: "Nunito"; }
+
+input.game-input {
+  background-color: transparent i !important; }
 
 .flexible-input-container {
   display: flex;

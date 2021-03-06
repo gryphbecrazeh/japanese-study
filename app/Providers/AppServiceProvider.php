@@ -27,9 +27,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
-        $this->app->singleton(Game::class, function ($app) {
-            return new Game();
+        //compose all the views....
+        view()->composer('*', function ($view) {
+            $this->app->singleton(Game::class, function ($app) {
+                return new Game();
+            });
+
+            //...with this variable
+            $view->with('cart');
         });
     }
+    //
 }

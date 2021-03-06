@@ -20,7 +20,12 @@ class GameController extends Controller
     //
     public function index()
     {
-        return view('app');
+        $message = [
+            'type'=>null,
+            'value'=>null
+        ];
+
+        return view('app', ['message'=>$message]);
     }
     //
     public function store(Request $request)
@@ -29,6 +34,7 @@ class GameController extends Controller
             'type'=>null,
             'value'=>null
         ];
+        
         $game = app(Game::class); // Figure out how to get URL and supply filterable parameters ie: word type, hasLearned, verb/noun/adjective
         // you're stupid, this controller is already on a route, just make them extend a base one or something
         $level = GModel::where('id', '=', $game->gameId)->get()->first()->levels()->orderBy('updated_at')->get()->first();
@@ -39,9 +45,12 @@ class GameController extends Controller
                 $game->setUserInput('kana', $request->input('kana'));
                 $game->setInputMode('meanings');
                 $game->saveGame();
+                $message=$game->getCorrectKanaMessage($targetWord);
+            } else {
+                $message=$game->getWrongKanaMessage($targetWord);
             }
             // Return back a message saying what the issue is
-            return view('app');
+            return view('app', ['message'=>$message]);
         }
         if ($game->inputMode == 'meanings' && !is_null($request->input('meanings'))) {
             $game->setUserInput('meanings', $request->input('meanings'));
@@ -52,9 +61,12 @@ class GameController extends Controller
              *
              */
             $meanings = preg_replace('/^\s*to\ +/i', '', $request->input('meanings'));
+
             preg_match_all('/[\w\s]+(?=\,?\s?)/', $meanings, $answers);
+
             $answers = collect($answers)->first();
-            $timesCorrect = 0;
+            $correctAnswers = 0;
+
             foreach ($answers as  $answer) {
                 if (collect($applicableMeanings)->contains(function ($value, $key) use ($answer) {
                     return $answer == $value;
@@ -62,11 +74,11 @@ class GameController extends Controller
                     $applicableMeanings = collect($applicableMeanings)->filter(function ($meaning) use ($answer) {
                         return $meaning != $answer;
                     });
-                    $timesCorrect++;
+                    $correctAnswers++;
                 }
             }
             // Can I abuse this by repeatedly refreshing and resubmitting the request? maybe not if I were actually finishing this
-            if ($timesCorrect > 0) {
+            if ($correctAnswers > 0) {
                 $targetWord->increaseTimesRight();
                 auth()->user()->learnedWords()->where('verb_id', '=', $targetWord->id)->get()->first()->increaseTimesRight();
                 $game->increaseScore();
@@ -92,14 +104,28 @@ class GameController extends Controller
             });
             // Get new word or level up
     
-            if (count($knownWords) === count($learnedWords)) {
-                if (count($knownWords)===10) {
+            if (count($knownWords) == count($learnedWords)) {
+                if (count($knownWords) == 10) {
                     dd('increase level');
                 }
-                // set message to new word with meaning
-                dd('get a new word');
+                $learnedWordIds = $learnedWords->map(function ($word) {
+                    return $word->verb_id;
+                });
+                $notLearnedWords = Verb::whereNotIn('id', $learnedWordIds)->get()->toArray();
+
+                $randomWord = $notLearnedWords[array_rand($notLearnedWords)];
+                auth()->user()->learnedWords()->create(['verb_id'=>$randomWord['id']]);
+
+                $game->setTargetWord($randomWord['id']);
+                $game->setInputMode('kana');
+                $message = $game->getNewWordMessage($randomWord);
+                $game->clearUserInput();
+
+                $game->saveGame();
+
+                return view('app', ['message'=>$message]);
             }
-    
+            $message = $game->getCorrectMeaningMessage($targetWord);
             $wordLists = [
                 'strugglingWords'=>$learnedWords->filter(function ($word) {
                     return $word->timesWrong > $word->timesRight;
