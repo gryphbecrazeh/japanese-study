@@ -16,7 +16,14 @@ class Message extends Component
     public function __construct($message)
     {
         //
-        $this->type = $message['type'];
+        $colors = [
+            'success' => 'bg-green-700',
+            'fail' => 'bg-red-700',
+            'new' => 'bg-blue-700',
+            'default' => 'bg-white'
+        ];
+
+        $this->type = $colors[$message['type']??'default'];
         $this->value = $message['value'];
     }
 

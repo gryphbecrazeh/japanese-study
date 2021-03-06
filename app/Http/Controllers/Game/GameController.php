@@ -83,11 +83,13 @@ class GameController extends Controller
                 auth()->user()->learnedWords()->where('verb_id', '=', $targetWord->id)->get()->first()->increaseTimesRight();
                 $game->increaseScore();
                 $game->increaseStreak();
+                $message = $game->getCorrectMeaningMessage($targetWord);
             } else {
                 $targetWord->increaseTimesWrong();
                 auth()->user()->learnedWords()->where('verb_id', '=', $targetWord->id)->get()->first()->increaseTimesWrong();
                 $game->resetScore();
                 $game->resetStreak();
+                $message = $game->getWrongMeaningMessage($targetWord);
             }
     
     
@@ -125,7 +127,8 @@ class GameController extends Controller
 
                 return view('app', ['message'=>$message]);
             }
-            $message = $game->getCorrectMeaningMessage($targetWord);
+
+
             $wordLists = [
                 'strugglingWords'=>$learnedWords->filter(function ($word) {
                     return $word->timesWrong > $word->timesRight;

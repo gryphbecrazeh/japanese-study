@@ -1,5 +1,5 @@
 @if ($message)
-    <div class="message {{ $type }} rounded bg-green-700 inline p-2 text-white font-bold">
+    <div class="message {{ $type }} rounded inline p-2 text-white font-bold  shadow-md">
         {{ $message }}
     </div>
 

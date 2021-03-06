@@ -104,7 +104,7 @@ class Game
     public function getWrongKanaMessage(Verb $verb = null)
     {
         $message = [
-            'type'=>'success',
+            'type'=>'fail',
             'value'=>null
         ];
         $kanji = unserialize($verb->kanji);
@@ -124,6 +124,18 @@ class Game
 
         return  $message;
     }
+    public function getWrongMeaningMessage(Verb $verb = null)
+    {
+        $message = [
+            'type'=>'fail',
+            'value'=>null
+        ];
+        $kanji = unserialize($verb->kanji);
+        $message['value'] = "Incorrect! " . $kanji['word'] . " means " . $verb->meaning;
+
+        return  $message;
+    }
+
     public function getNewWordMessage($verb = null)
     {
         $message = [
