@@ -158,17 +158,188 @@ If not Hiragana and/or katakana, redirect to kana game
 
 add front end support for messages
 
+--
+
+add conjugation support, type in meaning and select conjugation type from list
+
+ie: aokunai
+
+selectoptions
+
+is - affirmative
+isn't - negative
+was - past affirmative
+wasn't - past negative
+
+type in meaning
+
+--
+
+--
+
+show meaning
+Show kanji dictionary form - remove after experienced
+show target conjugation
+
+recollect word
+
+--
+
+--
+
+Guess the missing kanji character
+
+-   grab kanji character from word
+-   grab 3 random kanji characters
+-   multiple choice selection
+
+--
+
+--
+
+## Kanji challenge, practice all words that share a single kanji character
+
+helps associate the actual meaning of the kanji with the related words, and make more kanji more familiar and easier to understand when seen in unknown words
+
+-   I suppose we can use the kanji alive api to get a ranom kanji character, and then grab all words in our database and filter it based on whether or not it contains that kanji
+
 ## TODO
 
-Add level support
+## Dashboard
+
+-   Show struggling words or none
+-   Show number of learned words that are listed as 'shouldKnow' to show count of known words, maybe have an overtime metric to show learned words overtime, probably by date created, or create a new column that will only be updated when shouldKnow is toggled, if shouldKnow is removed, then remove the wordKnownDate
+-   Show highest level achieved per game category and overall ( maybe a stacked bar chart or something )
+-   Show Most troubled kanji for the user
+-   Show most troubled words / kanji overall
+-   create user ranking system?
+
+--
+
+## Add level support
+
+--
+
+## Add User Manager
+
+-   add user
+-   edit user
+-   delete user
+-   reset password? might have to set up email api with google
+
+--
+
+## Add Word Manager
+
+-   add store method to word controller
+-   make inputs that require autokana use it
+    Add User Roles
+    Fix level generation issues - see problems
+
+--
+
+## Add User Learned Word Manager
+
+-   Display all learned words by the user
+-   See in depth statistics involving the words
+-   Ability to 'forget' words
+
+--
+
+## Add Hiragana and Katakana Learning Games ( should be pretty easy )
+
+--
+
+## Add Number Learning Game, add counters on additional modes
+
+Regular number mode
+
+0-9
+10-100
+100-10,000
+etc...
+
+nTh number mode
+
+0th, 1st, 2nd, 3rd, etc...
+
+counter mode
+
+0 mins, 1 min, 2 mins, 3 mins, 4 mins, etc...
+
+--
+
+## Add noun learning game
+
+random mode
+
+category mode
+
+--
+
+## Expand to using words instead of verbs, maybe set up a word table that is a collection of all word types such as nouns, verbs, and adjectives
+
+--
+
+## Fix word selection so that it is only based on the level dictionary, not the user's learnedwords dictionary
+
+--
+
+set amount of times needed to progress as environmental variable, and switch it from 10 to 3
+
+Once level generation is fixed, set up metrics to get progression and display with graphs and charts
+
+## Fix suru verbs, remove the o part of oshimasu, that's not supposed to be there
+
+--
+
+## Fix word columns
+
+-   remove 'meaning' column and set it to get all of the meanings from the 'meanings' serialized string, and join that with commas and spaces
+-   take kanjj's word and meanings and separate them, make them their own columns, and don't nest stuff in there like that again
+-   make the stems be in hiragana
+-   add all columns necessary for all the different possible forms or make there be some sort of conjugate method that handles conjugating them in a way
+-   get rid of the politeForm table and use the method described above
+-   add kanji stem column
+
+--
+
+Add conjugation support
+
+Add new words from list on phone
+
+create new seeding factory to handle seeding the database with words
+
+Fix text colors
+
+Fix flexible input stylings, make pretty, use svgs
+
+Make Navbar collapsable
+
+Make navbar sections collapsable
+
+Create 'new or continue game' page for each of the routes
+
+Add 'replay game' option where it uses the old dictionaries
+
+Add leaderboards to home page
+
+Add forums page? need forums table, posts table with external id
+
+## Add error reporting
+
+-   Add button to card to submit an error, provide a dropdown of all recent words, select word, and enter problem with word
+-   word manager shows border around words depending on how many errors have been filed about that word
+
+--
 
 ## PROBLEMS
 
 -   FIXED -- The first go around for the game fails, I believe it's related to getting the dictionary set up for the user, refreshing once or twice seems to fix it
 -   FIXED -- The first go around doesn't prompt for the meaning, and makes the user type in the kana for each word before moving onto the meaning, I may have to wrap the word getter in the meaning check, since that entire procedure depends on that
--   When checking the meaning, attempting to get a new word occasionally ends up with 0, may be related to mastered_words being empty, maybe remove all empty arrays, will require re-evalutating the random dictionary ODDS setup to be dynamic, based on the existing words
+-   FIXED -- When checking the meaning, attempting to get a new word occasionally ends up with 0, may be related to mastered_words being empty, maybe remove all empty arrays, will require re-evalutating the random dictionary ODDS setup to be dynamic, based on the existing words
 -   FIXED -- Word count isn't displaying word count
 -   FIXED -- It MAY be duplicating words when adding them to the learned word list, yeah it definitely loads it in twice
--   Service provider returns blank page at first, auth()->user() returns null, meaning it can't progress
--   Word count doesn't update on increasing words, but word does re-appear
--   It is creating a LOT of levels, I can only assume my shit code has got me again
+-   FIXED -- Service provider returns blank page at first, auth()->user() returns null, meaning it can't progress
+-   Word count doesn't update on increasing words, but word does re-appear, word selection is based on learned words, and I forgot to every reserialize and restrict word selection to the game word dictionary, need to address that
+-   FIXED -- It is creating a LOT of levels, I can only assume my shit code has got me again

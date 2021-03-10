@@ -13,13 +13,13 @@ use App\Http\Controllers\Controller;
 class GameController extends Controller
 {
     public $game;
-    public function __construct(Game $game)
+    public function __construct()
     {
-        $this->game = $game;
     }
     //
-    public function index()
+    public function index(Game $game)
     {
+        $this->game = $game;
         $message = [
             'type'=>null,
             'value'=>null
@@ -35,8 +35,12 @@ class GameController extends Controller
             'value'=>null
         ];
         
-        $game = app(Game::class); // Figure out how to get URL and supply filterable parameters ie: word type, hasLearned, verb/noun/adjective
+        $game = app(Game::class);
+        $game->loadGame();
+        // Figure out how to get URL and supply filterable parameters ie: word type, hasLearned, verb/noun/adjective
         // you're stupid, this controller is already on a route, just make them extend a base one or something
+
+        // $level = collect(auth()->user()->games)->orderBy('updated_at', 'desc')->limit(1)->get()->first()->levels();
         $level = GModel::where('id', '=', $game->gameId)->get()->first()->levels()->orderBy('updated_at')->get()->first();
         $targetWord = Verb::where('id', '=', $game->targetWord)->limit(1)->get()->first();
 

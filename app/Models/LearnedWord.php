@@ -51,4 +51,14 @@ class LearnedWord extends Model
         }
         $this->save();
     }
+    public function getVerbObject()
+    {
+        $verbObject = Verb::where('id', '=', $this->verb_id)->limit(1)->get()->first();
+        $verbObject->kanji = unserialize($verbObject->kanji);
+        $verbObject->meanings = unserialize($verbObject->meanings);
+        $verbObject->timesRight = $this->timesRight;
+        $verbObject->timesWrong = $this->timesWrong;
+
+        return $verbObject;
+    }
 }

@@ -1,4 +1,3 @@
-<div
-    {{ $attributes->merge(['class' => 'container h-full w-full sm:max-w-screen-sm md:max-w-screen-md lg:max-w-screen-lg sm:mx-auto']) }}>
+<div {{ $attributes->merge(['class' => 'h-full w-full']) }}>
     {{ $slot }}
 </div>

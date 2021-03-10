@@ -23,31 +23,29 @@ class Game
     public $topScore = 0;
     public $shouldKnow = false;
 
-    public function __construct()
+    public function loadGame()
     {
         if (is_null(auth()->user())) {
             // This attempt to redirect isn't working, it just straight up fails because there is no user to authorize when this is initially ran
             return redirect(route('home'));
         }
+
         $learnedWords = collect(auth()->user()->learnedWords) ?? collect([]);
 
         $learnedDictionary = $learnedWords->map(function ($word) {
             return $word->verb_id;
         })->toArray();
-
         $game = null;
 
         $games = auth()->user()->games;
         // If there are no previous games, create a new game and level, and apply the dictionary
         if (!count($games)>=1) {
             if (!count($learnedDictionary) > 0) {
-                $verbs = collect(DB::table('verbs')->get());// Add randomize function so that every new game doesn't return the same words, probably abstract out into an api endpoint or controller
-                $verbs->splice(3);
+                $verbs = Verb::limit(3)->get();// Add randomize function so that every new game doesn't return the same words, probably abstract out into an api endpoint or controller
                 $learnedDictionary = $verbs->map(function ($word) {
                     auth()->user()->learnedWords()->create([ 'verb_id'=> $word->id ]);
                     return $word->id;
                 })->toArray();
-                dd();
             }
     
             $level_dictionary = collect($learnedDictionary)->flatMap(function ($id) {
@@ -57,11 +55,12 @@ class Game
                 $word = Verb::where('id', '=', $id)->limit(1)->get();
                 return $word;
             });
-            auth()->user()->games()->create()->levels()->create(['dictionary'=>serialize($learnedDictionary)]);
-        }
-        $game = auth()->user()->games()->orderBy('updated_at', 'desc')->limit(1)->get()->first();
+            $game = auth()->user()->games()->create()->levels()->create(['dictionary'=>serialize($learnedDictionary)]);
+        } else {
+            $game = auth()->user()->games()->orderBy('updated_at', 'desc')->limit(1)->get()->first();
 
-        $game = $game->levels()->orderBy('updated_at', 'desc')->limit(1)->get()->first();
+            $game = $game->levels()->orderBy('updated_at', 'desc')->limit(1)->get()->first();
+        }
 
         // This was re-assigning the value of the dictionary, and I'd rather just unserialize it every time it's accessed
         // $level_dictionary = unserialize($game->dictionary);

@@ -40,4 +40,8 @@ class Verb extends Model
         $this->timesWrong++;
         $this->save();
     }
+    public function getId()
+    {
+        return $this->id;
+    }
 }
