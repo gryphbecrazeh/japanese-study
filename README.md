@@ -281,11 +281,11 @@ category mode
 
 --
 
-## Fix word selection so that it is only based on the level dictionary, not the user's learnedwords dictionary
+## DONE -- Fix word selection so that it is only based on the level dictionary, not the user's learnedwords dictionary
 
 --
 
-set amount of times needed to progress as environmental variable, and switch it from 10 to 3
+DONE -- set amount of times needed to progress as environmental variable, and switch it from 10 to 3
 
 Once level generation is fixed, set up metrics to get progression and display with graphs and charts
 
@@ -341,5 +341,5 @@ Add forums page? need forums table, posts table with external id
 -   FIXED -- Word count isn't displaying word count
 -   FIXED -- It MAY be duplicating words when adding them to the learned word list, yeah it definitely loads it in twice
 -   FIXED -- Service provider returns blank page at first, auth()->user() returns null, meaning it can't progress
--   Word count doesn't update on increasing words, but word does re-appear, word selection is based on learned words, and I forgot to every reserialize and restrict word selection to the game word dictionary, need to address that
+-   FIXED -- Word count doesn't update on increasing words, but word does re-appear, word selection is based on learned words, and I forgot to every reserialize and restrict word selection to the game word dictionary, need to address that
 -   FIXED -- It is creating a LOT of levels, I can only assume my shit code has got me again

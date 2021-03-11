@@ -1,3 +1,3 @@
-<ul {{ $attributes->merge(['class' => 'flex items-start']) }}>
+<ul {{ $attributes->merge(['class' => 'navsection flex items-start']) }}>
     {{ $slot }}
 </ul>

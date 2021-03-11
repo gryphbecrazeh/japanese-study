@@ -37,7 +37,7 @@ class LearnedWord extends Model
     public function increaseTimesRight()
     {
         $this->timesRight++;
-        if ($this->timesRight > ($this->timesWrong + 5)) {
+        if ($this->timesRight > ($this->timesWrong + env('WORD_DIFFICULTY'))) {
             $this->shouldKnow = true;
         }
 
@@ -46,7 +46,7 @@ class LearnedWord extends Model
     public function increaseTimesWrong()
     {
         $this->timesWrong++;
-        if ($this->timesRight < ($this->timesWrong + 5)) {
+        if ($this->timesRight < ($this->timesWrong + env('WORD_DIFFICULTY'))) {
             $this->shouldKnow = false;
         }
         $this->save();

@@ -33,12 +33,6 @@
                     Submit
                 </button>
             </div>
-            <div class="hint">Type '?' to take a loss and learn the word</div>
-            <div class="hint">Press 'Enter' to submit</div>
-            <div class="hint">
-                Get the same word right more than the number of times you've
-                gotten it wrong + 3 will allow you to get more words
-            </div>
         </div>
     </form>
 </div>

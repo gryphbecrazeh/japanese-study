@@ -22,6 +22,14 @@ class Game extends Component
         $this->game->loadGame();
         $targetWord = Verb::where('id', '=', $this->game->targetWord)->limit(1)->get()->first();
 
+        $learnedWords = auth()->user()->learnedWords;
+
+        $learnedWordIds = $learnedWords->map(function ($word) {
+            return $word->verb_id;
+        });
+
+        // dd($learnedWordIds, $targetWord, $this->game);
+
         $targetWord->meanings = unserialize($targetWord->meanings);
         $targetWord->kanji = unserialize($targetWord->kanji);
         $targetWord->shouldKnow = LearnedWord::where('verb_id', '=', $targetWord->id)->limit(1)->get()->first()->shouldKnow;

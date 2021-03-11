@@ -25,6 +25,8 @@ class GameController extends Controller
             'value'=>null
         ];
 
+
+
         return view('app', ['message'=>$message]);
     }
     //
@@ -40,8 +42,6 @@ class GameController extends Controller
         // Figure out how to get URL and supply filterable parameters ie: word type, hasLearned, verb/noun/adjective
         // you're stupid, this controller is already on a route, just make them extend a base one or something
 
-        // $level = collect(auth()->user()->games)->orderBy('updated_at', 'desc')->limit(1)->get()->first()->levels();
-        $level = GModel::where('id', '=', $game->gameId)->get()->first()->levels()->orderBy('updated_at')->get()->first();
         $targetWord = Verb::where('id', '=', $game->targetWord)->limit(1)->get()->first();
 
         if ($game->inputMode == 'kana' && !is_null($request->input('kana'))) {
@@ -97,7 +97,7 @@ class GameController extends Controller
             }
     
     
-            $learnedWords = auth()->user()->learnedWords()->get();
+            $learnedWords = auth()->user()->learnedWords;
     
             // debug
             // $learnedWords = $learnedWords->map(function ($word) {
@@ -109,18 +109,30 @@ class GameController extends Controller
                 return $word->shouldKnow;
             });
             // Get new word or level up
-    
             if (count($knownWords) == count($learnedWords)) {
                 if (count($knownWords) == 10) {
                     dd('increase level');
                 }
+                /**
+                 *
+                 * Get A New Word
+                 *
+                 */
+                $gameDictionary = collect(unserialize($game->dictionary));
+
+                $notLearnedWords = Verb::whereNotIn('id', $gameDictionary)->get()->toArray();
+
+                $randomWord = $notLearnedWords[array_rand($notLearnedWords)];
+
+                $game->dictionary = serialize([...$gameDictionary, $randomWord['id']]);
+
                 $learnedWordIds = $learnedWords->map(function ($word) {
                     return $word->verb_id;
                 });
-                $notLearnedWords = Verb::whereNotIn('id', $learnedWordIds)->get()->toArray();
 
-                $randomWord = $notLearnedWords[array_rand($notLearnedWords)];
-                auth()->user()->learnedWords()->create(['verb_id'=>$randomWord['id']]);
+                if (!$learnedWordIds->contains($randomWord['id'])) {
+                    auth()->user()->learnedWords()->create(['verb_id'=>$randomWord['id']]);
+                }
 
                 $game->setTargetWord($randomWord['id']);
                 $game->setInputMode('kana');

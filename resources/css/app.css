@@ -3,6 +3,35 @@ html {
   line-height: 1.15;
   -webkit-text-size-adjust: 100%; }
 
+@media screen and (min-width: 1200px) {
+  .message {
+    animation-name: slideIn;
+    animation-duration: 5000ms;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: forwards;
+    overflow: hidden;
+    white-space: nowrap; }
+  @keyframes slideIn {
+    0% {
+      margin-left: -10000px; }
+    25% {
+      margin-left: 40%; }
+    80% {
+      margin-left: 40%; }
+    100% {
+      margin-left: 10000px; } } }
+
+nav {
+  width: auto !important; }
+  nav .collapse-button line {
+    transition-duration: 250ms;
+    transition-timing-function: ease-in-out; }
+  nav .navsection {
+    display: none; }
+
+nav.open .navsection {
+  display: block; }
+
 .message .success {
   background-color: white; }
 
