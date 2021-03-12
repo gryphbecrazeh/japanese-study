@@ -3,7 +3,7 @@
         <div class="top flex w-full flex-col items-center justify-center">
             <div class="notification" id="notification-container"></div>
             <div class="flex gap-2 text-gray-100 bold">
-                <p>Level: {{ $level + 1 }}</p>
+                <p>Level: {{ $level }}</p>
                 <p>Score: {{ $score }}</p>
                 <p>Streak: {{ $streak }}</p>
                 <p>Word Count:{{ count($dictionary) }}</p>
@@ -21,18 +21,17 @@
     <form action="{{ route('game.verb.post', ['game_id' => $id]) }}" method="POST">
         @csrf
         <div class="w-full flex justify-center items-center">
-            <x-element.input name="{{ $inputMode }}" type="text"
-                id="{{ $inputMode === 'kana' ? 'autokana' : 'standard' }}"
-                class="text-white text-center placeholder-center rounded bg-transparent text-white-100 game-input bg-transparent p-2 input w-60 h-full focus:border-green-600 focus:border-2 placeholder-white"
-                placeholder="{{ $inputMode === 'kana' ? 'Enter the verb...' : 'Translate Below' }}" />
-        </div>
-        <div class="py-4">
-            <div class="flex flex-row gap-2 justify-evenly">
-                <button class="btn submit bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+            <div class="flex gap-2 justify-around bg-fog-100 rounded">
+                <x-element.input name="{{ $inputMode }}" type="text"
+                    id="{{ $inputMode === 'kana' ? 'autokana' : 'standard' }}"
+                    class="text-white text-center placeholder-center rounded-l game-input bg-transparent p-2 input w-60 h-full placeholder-white"
+                    placeholder="{{ $inputMode === 'kana' ? 'Enter the verb...' : 'Translate Below' }}" />
+                <button class="btn submit bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-r"
                     id="submit-button" type="submit">
                     Submit
                 </button>
             </div>
+
         </div>
     </form>
 </div>

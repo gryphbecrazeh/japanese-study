@@ -42,9 +42,9 @@ class Level extends Model
         $this->topStreak = $this->streak;
         $this->save;
     }
-    public function increaseScore()
+    public function increaseScore($int = 1)
     {
-        $this->score++;
+        $this->score+=$int;
         if ($this->score > $this->topScore) {
             $this->setTopScore();
         }
@@ -86,6 +86,10 @@ class Level extends Model
         return $this->userInput;
     }
     public function clearUserInput()
+    {
+        dd($this);
+    }
+    public function increaseLevel()
     {
         dd($this);
     }

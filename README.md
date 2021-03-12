@@ -231,7 +231,7 @@ helps associate the actual meaning of the kanji with the related words, and make
 
 ## Add Word Manager
 
--   add store method to word controller
+-   DONE -- add store method to word controller
 -   make inputs that require autokana use it
     Add User Roles
     Fix level generation issues - see problems
@@ -289,7 +289,7 @@ DONE -- set amount of times needed to progress as environmental variable, and sw
 
 Once level generation is fixed, set up metrics to get progression and display with graphs and charts
 
-## Fix suru verbs, remove the o part of oshimasu, that's not supposed to be there
+## DONE -- Fix suru verbs, remove the o part of oshimasu, that's not supposed to be there
 
 --
 
@@ -343,3 +343,9 @@ Add forums page? need forums table, posts table with external id
 -   FIXED -- Service provider returns blank page at first, auth()->user() returns null, meaning it can't progress
 -   FIXED -- Word count doesn't update on increasing words, but word does re-appear, word selection is based on learned words, and I forgot to every reserialize and restrict word selection to the game word dictionary, need to address that
 -   FIXED -- It is creating a LOT of levels, I can only assume my shit code has got me again
+-   Level progression issue, probably problem persisting throughout the entirety of the game object, learned words and should know doesn't work for this
+    Why? Because if it pulls an already learned word for the new level dictionary, it will still be active, need to figure out solution
+    either filter off learned words, or set up levels to have their own learned word metrics, maybe have a should know column for each of the words in the level, though that may require adding more columns for how many words are in the level cap
+    Point System?
+    Maybe assign learned words to has many on levels, and have the user object grab all the words from all the games and all the levels on each game to determine statistics?
+-   Possibly Fixed -- Level progression, game object doesn't appear to be updating when I increase the level and load the new game, though that may be fixed now, since it started giving me new words, but creating a new game every time

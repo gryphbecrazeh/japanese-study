@@ -1,6 +1,7 @@
 <?php
 namespace App\Game;
 
+use App\Models\Game as G;
 use App\Models\Verb;
 use App\Models\Level;
 use Illuminate\Support\Facades\DB;
@@ -13,7 +14,7 @@ class Game
     *
     * @return void
     */
-    public $gameId;
+    public $id;
     public $inputMode;
     public $targetWord;
     public $dictionary = [];
@@ -73,8 +74,8 @@ class Game
         //     $word->kanji = unserialize($word->kanji);
         //     return $word;
         // });
-        $this->targetWord = $game['targetWord'] ?? $learnedDictionary[0];
-        $this->gameId = $game['id'];
+        $this->targetWord = $game['targetWord'] ?? unserialize($game['dictionary'])[0];
+        $this->id = $game['id'];
         $this->dictionary = $game['dictionary'];
         $this->score = $game['score'];
         $this->streak = $game['streak'];
@@ -200,19 +201,48 @@ class Game
     }
     public function saveGame()
     {
-        $game = auth()->user()->games()->where('id', '=', $this->gameId)->orderBy('updated_at', 'desc')->limit(1)->get()->first();
-        $game = $game->levels()->orderBy('updated_at', 'desc')->limit(1)->get()->first();
-        $game-> dictionary = $this->dictionary;
-        $game->targetWord = $this->targetWord;
-        $game->level=$this->level;
-        $game->streak=$this->streak;
-        $game->topStreak=$this->topStreak;
-        $game->score=$this->score;
-        $game->topScore=$this->topScore;
-        $game->topStreak=$this->topStreak;
-        $game->inputMode=$this->inputMode;
-        $game->kana=$this->userInput['kana'];
-        $game->meanings=$this->userInput['meanings'];
-        $game->save();
+        // $game = auth()->user()->games()->where('id', '=', $this->id)->orderBy('updated_at', 'desc')->limit(1)->get()->first();
+        // $game = auth()->user()->games()->where('id', '=', $this->id)->get()->first();
+        $game = auth()->user()->games()->orderBy('updated_at', 'desc')->limit(1)->get()->first();
+
+        $level = $game->levels()->orderBy('updated_at', 'desc')->limit(1)->get()->first();
+        $level-> dictionary = $this->dictionary;
+        $level->targetWord = $this->targetWord;
+        $level->level=count($game->levels);
+        $level->streak=$this->streak;
+        $level->topStreak=$this->topStreak;
+        $level->score=$this->score;
+        $level->topScore=$this->topScore;
+        $level->topStreak=$this->topStreak;
+        $level->inputMode=$this->inputMode;
+        $level->kana=$this->userInput['kana'];
+        $level->meanings=$this->userInput['meanings'];
+        $level->save();
+    }
+
+    public function IncreaseLevel()
+    {
+        $game = auth()->user()->games()->orderBy('updated_at', 'desc')->limit(1)->get()->first();
+
+        $levels = $game->levels;
+        $oldDictionaries = collect($levels)->flatMap(function ($level) {
+            return unserialize($level->dictionary);
+        });
+        $unknownWords = Verb::whereNotIn('id', $oldDictionaries)->get();
+        $newDictionary = collect([]);
+        while (count($newDictionary) < 3) {
+            // get new word
+            $randIndex = rand(0, count($unknownWords)-1);
+            $newWord = $unknownWords->splice($randIndex, 1)->first()->toArray();
+            auth()->user()->learnedWords()->create(['verb_id'=>$newWord['id']]);
+            $newDictionary->push(collect($newWord));
+        }
+
+        $newDictionaryIds = $newDictionary->map(function ($item) {
+            return $item['id'];
+        });
+
+        return $game->levels()->create(['dictionary'=>serialize($newDictionaryIds->toArray())]);
+        # code...
     }
 }

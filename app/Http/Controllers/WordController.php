@@ -35,4 +35,21 @@ class WordController extends Controller
 
         return view('word', ['verbs'=>$verbs, 'keys'=>$keys]);
     }
+    public function store(Request $request)
+    {
+        $word = Verb::where('id', '=', $request['id'])->limit(1)->get()->first();
+        $word->meaning = $request['meaning'];
+        $word->politeForm = $request['politeForm'];
+        $word->stem = $request['stem'];
+        $word->verbType = $request['verbType'];
+        $word->meanings = serialize(explode('ENDOFLINE', $request['meanings']));
+        $kanji = [
+            'word'=>$request['word'],
+            'meaning'=> $request['meaning']
+        ];
+        $word->kanji = serialize($kanji);
+        $word->save();
+        # code...
+        return redirect(route('admin.manager.word'));
+    }
 }

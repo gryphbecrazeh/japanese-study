@@ -37,27 +37,34 @@ class GameController extends Controller
             'value'=>null
         ];
         
-        $game = app(Game::class);
-        $game->loadGame();
+        $level = app(Game::class);
+        $level->loadGame();
+
+        $levelDictionary = collect(unserialize($level->dictionary));
+        $learnedWords = auth()->user()->learnedWords()->whereIn('verb_id', $levelDictionary)->get();
+        $targetWord = Verb::where('id', '=', $level->targetWord)->limit(1)->get()->first();
+        $knownWords = $learnedWords->filter(function ($word) {
+            return $word->shouldKnow;
+        });
         // Figure out how to get URL and supply filterable parameters ie: word type, hasLearned, verb/noun/adjective
         // you're stupid, this controller is already on a route, just make them extend a base one or something
 
-        $targetWord = Verb::where('id', '=', $game->targetWord)->limit(1)->get()->first();
 
-        if ($game->inputMode == 'kana' && !is_null($request->input('kana'))) {
+        if ($level->inputMode == 'kana' && !is_null($request->input('kana'))) {
             if ($request->input('kana') == $targetWord->politeForm) {
-                $game->setUserInput('kana', $request->input('kana'));
-                $game->setInputMode('meanings');
-                $game->saveGame();
-                $message=$game->getCorrectKanaMessage($targetWord);
+                $level->setUserInput('kana', $request->input('kana'));
+                $level->setInputMode('meanings');
+                $level->saveGame();
+                $message=$level->getCorrectKanaMessage($targetWord);
             } else {
-                $message=$game->getWrongKanaMessage($targetWord);
+                $message=$level->getWrongKanaMessage($targetWord);
             }
             // Return back a message saying what the issue is
             return view('app', ['message'=>$message]);
         }
-        if ($game->inputMode == 'meanings' && !is_null($request->input('meanings'))) {
-            $game->setUserInput('meanings', $request->input('meanings'));
+
+        if ($level->inputMode == 'meanings' && !is_null($request->input('meanings'))) {
+            $level->setUserInput('meanings', $request->input('meanings'));
             $applicableMeanings = unserialize($targetWord->meanings);
             /**
              *
@@ -70,6 +77,7 @@ class GameController extends Controller
 
             $answers = collect($answers)->first();
             $correctAnswers = 0;
+      
 
             foreach ($answers as  $answer) {
                 if (collect($applicableMeanings)->contains(function ($value, $key) use ($answer) {
@@ -85,46 +93,38 @@ class GameController extends Controller
             if ($correctAnswers > 0) {
                 $targetWord->increaseTimesRight();
                 auth()->user()->learnedWords()->where('verb_id', '=', $targetWord->id)->get()->first()->increaseTimesRight();
-                $game->increaseScore();
-                $game->increaseStreak();
-                $message = $game->getCorrectMeaningMessage($targetWord);
+                $level->increaseScore($correctAnswers);
+                $level->increaseStreak();
+                $message = $level->getCorrectMeaningMessage($targetWord);
             } else {
                 $targetWord->increaseTimesWrong();
                 auth()->user()->learnedWords()->where('verb_id', '=', $targetWord->id)->get()->first()->increaseTimesWrong();
-                $game->resetScore();
-                $game->resetStreak();
-                $message = $game->getWrongMeaningMessage($targetWord);
+                $level->resetScore();
+                $level->resetStreak();
+                $message = $level->getWrongMeaningMessage($targetWord);
             }
     
-    
-            $learnedWords = auth()->user()->learnedWords;
+   
     
             // debug
             // $learnedWords = $learnedWords->map(function ($word) {
             //     $word->shouldKnow = true;
             //     return $word;
             // });
-    
-            $knownWords = $learnedWords->filter(function ($word) {
-                return $word->shouldKnow;
-            });
+
             // Get new word or level up
             if (count($knownWords) == count($learnedWords)) {
-                if (count($knownWords) == 10) {
-                    dd('increase level');
-                }
                 /**
                  *
                  * Get A New Word
                  *
                  */
-                $gameDictionary = collect(unserialize($game->dictionary));
 
-                $notLearnedWords = Verb::whereNotIn('id', $gameDictionary)->get()->toArray();
+                $notLearnedWords = Verb::whereNotIn('id', $levelDictionary)->get()->toArray();
 
                 $randomWord = $notLearnedWords[array_rand($notLearnedWords)];
 
-                $game->dictionary = serialize([...$gameDictionary, $randomWord['id']]);
+                $level->dictionary = serialize([...$levelDictionary, $randomWord['id']]);
 
                 $learnedWordIds = $learnedWords->map(function ($word) {
                     return $word->verb_id;
@@ -134,16 +134,21 @@ class GameController extends Controller
                     auth()->user()->learnedWords()->create(['verb_id'=>$randomWord['id']]);
                 }
 
-                $game->setTargetWord($randomWord['id']);
-                $game->setInputMode('kana');
-                $message = $game->getNewWordMessage($randomWord);
-                $game->clearUserInput();
+                $level->setTargetWord($randomWord['id']);
+                $level->setInputMode('kana');
+                $message = $level->getNewWordMessage($randomWord);
+                $level->clearUserInput();
 
-                $game->saveGame();
+                $level->saveGame();
 
                 return view('app', ['message'=>$message]);
             }
 
+
+            // Filter learned words to words that are also available at the level, to retain the times right and times wrong metrics
+            $learnedWords = $learnedWords->filter(function ($word) use ($levelDictionary) {
+                return $levelDictionary->contains($word->verb_id);
+            });
 
             $wordLists = [
                 'strugglingWords'=>$learnedWords->filter(function ($word) {
@@ -177,13 +182,19 @@ class GameController extends Controller
             }
     
             $randomWord=$options[rand(0, count($options)-1)];
-            $game->setTargetWord($randomWord['verb_id']);
-            $game->setInputMode('kana');
+            $level->setTargetWord($randomWord['verb_id']);
+            $level->setInputMode('kana');
             // clear user inputs
-            $game->clearUserInput();
+            $level->clearUserInput();
         }
         // update the db
-        $game->saveGame();
+        $level->saveGame();
+        if (count($knownWords) == env('LEVEL_CAP')) {
+            $level->increaseLevel();
+            $level->loadGame();
+            $level->saveGame();
+        }
+
         return view('app', ['message'=>$message]);
     }
 }

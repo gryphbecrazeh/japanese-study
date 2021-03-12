@@ -45,7 +45,8 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('/Admin')->group(function () {
         Route::prefix('/manager')->group(function () {
             Route::get('/user', [UserController::class, 'index'])->name('admin.manager.user'); // MANAGE ALL USERS IN THE SYSTEM
-        Route::get('/word', [WordController::class, 'index'])->name('admin.manager.word'); // MANAGE ALL WORDS IN THE SYSTEM
+            Route::get('/word', [WordController::class, 'index'])->name('admin.manager.word'); // MANAGE ALL WORDS IN THE SYSTEM
+            Route::post('/word', [WordController::class, 'store'])->name('admin.manager.word.update'); // MANAGE ALL WORDS IN THE SYSTEM
         });
     });
 
