@@ -73,7 +73,7 @@ class GameController extends Controller
              */
             $meanings = preg_replace('/^\s*to\ +/i', '', $request->input('meanings'));
 
-            preg_match_all('/[\w\s]+(?=\,?\s?)/', $meanings, $answers);
+            preg_match_all('/\w[\w\s]+(?=\,?\s*)/', $meanings, $answers);
 
             $answers = collect($answers)->first();
             $correctAnswers = 0;
@@ -83,12 +83,13 @@ class GameController extends Controller
                 if (collect($applicableMeanings)->contains(function ($value, $key) use ($answer) {
                     return $answer == $value;
                 })) {
+                    $correctAnswers++;
                     $applicableMeanings = collect($applicableMeanings)->filter(function ($meaning) use ($answer) {
                         return $meaning != $answer;
                     });
-                    $correctAnswers++;
                 }
             }
+
             // Can I abuse this by repeatedly refreshing and resubmitting the request? maybe not if I were actually finishing this
             if ($correctAnswers > 0) {
                 $targetWord->increaseTimesRight();
@@ -146,8 +147,8 @@ class GameController extends Controller
 
 
             // Filter learned words to words that are also available at the level, to retain the times right and times wrong metrics
-            $learnedWords = $learnedWords->filter(function ($word) use ($levelDictionary) {
-                return $levelDictionary->contains($word->verb_id);
+            $learnedWords = $learnedWords->filter(function ($word) use ($levelDictionary, $targetWord) {
+                return $levelDictionary->contains($word->verb_id) && $word->verb_id != $targetWord->id;
             });
 
             $wordLists = [
@@ -162,7 +163,7 @@ class GameController extends Controller
     
             $wordLists['otherWords'] = $learnedWords->filter(function ($word) use ($wordLists) {
                 $results = collect($wordLists['strugglingWords'])->contains(function ($w) use ($word) {
-                    return $w->verb_id == $word->verb_id;
+                    return $w->verb_id == $word->verb_id ;
                 });
                 return !$results;
             });

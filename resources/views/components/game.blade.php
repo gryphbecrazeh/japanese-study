@@ -5,7 +5,8 @@
             <div class="flex gap-2 text-gray-100 bold">
                 <p>Level: {{ $level }}</p>
                 <p>Score: {{ $score }}</p>
-                <p>Streak: {{ $streak }}</p>
+                <p>Top Score: {{ $topScore }}</p>
+                <p>Best Streak: {{ $topStreak }}</p>
                 <p>Word Count:{{ count($dictionary) }}</p>
             </div>
             <div class=" flex flex-col justify-center text-center text-gray-100 bold">

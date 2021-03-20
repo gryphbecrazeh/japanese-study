@@ -15,7 +15,11 @@ class Level extends Model
      * @var array
      */
     protected $fillable = [
-        'dictionary'
+        'dictionary',
+        'streak',
+        'topStreak',
+        'score',
+        'topScore'
     ];
     /**
      * The attributes that are mass assignable
@@ -42,7 +46,7 @@ class Level extends Model
         $this->topStreak = $this->streak;
         $this->save;
     }
-    public function increaseScore($int = 1)
+    public function increaseScore($int)
     {
         $this->score+=$int;
         if ($this->score > $this->topScore) {

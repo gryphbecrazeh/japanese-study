@@ -74,7 +74,7 @@ class Game
         //     $word->kanji = unserialize($word->kanji);
         //     return $word;
         // });
-        $this->targetWord = $game['targetWord'] ?? unserialize($game['dictionary'])[0];
+        $this->targetWord = $game['targetWord'] ?? unserialize($game->dictionary)[0];
         $this->id = $game['id'];
         $this->dictionary = $game['dictionary'];
         $this->score = $game['score'];
@@ -157,9 +157,9 @@ class Game
     {
         $this->topStreak = $this->streak;
     }
-    public function increaseScore()
+    public function increaseScore($int)
     {
-        $this->score++;
+        $this->score+=$int;
         if ($this->score > $this->topScore) {
             $this->setTopScore();
         }
@@ -224,7 +224,8 @@ class Game
     {
         $game = auth()->user()->games()->orderBy('updated_at', 'desc')->limit(1)->get()->first();
 
-        $levels = $game->levels;
+        $levels = $game->levels()->orderBy('updated_at', 'desc')->get();
+        $currentLevel = $levels->first();
         $oldDictionaries = collect($levels)->flatMap(function ($level) {
             return unserialize($level->dictionary);
         });
@@ -241,8 +242,13 @@ class Game
         $newDictionaryIds = $newDictionary->map(function ($item) {
             return $item['id'];
         });
-
-        return $game->levels()->create(['dictionary'=>serialize($newDictionaryIds->toArray())]);
+        return $game->levels()->create([
+            'dictionary'=>serialize($newDictionaryIds->toArray()),
+            'streak' => $currentLevel->streak,
+            'topStreak' => $currentLevel->topStreak,
+            'score'=> $currentLevel->score,
+            'topScore' => $currentLevel->topStreak
+            ]);
         # code...
     }
 }

@@ -348,4 +348,6 @@ Add forums page? need forums table, posts table with external id
     either filter off learned words, or set up levels to have their own learned word metrics, maybe have a should know column for each of the words in the level, though that may require adding more columns for how many words are in the level cap
     Point System?
     Maybe assign learned words to has many on levels, and have the user object grab all the words from all the games and all the levels on each game to determine statistics?
+-   FIXED -- Leveling up erases score and streak, need to add to constructor to carry over
 -   Possibly Fixed -- Level progression, game object doesn't appear to be updating when I increase the level and load the new game, though that may be fixed now, since it started giving me new words, but creating a new game every time
+-   If you don't know the kana, you can't progress at all, need to add a increase times wrong for it
