@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Game;
 
-use App\Models\Game as GModel;
 use App\Game\Game;
 use App\Models\Verb;
 use App\Models\Level;
+use App\Models\LearnedWord;
 use Illuminate\Http\Request;
+use App\Models\Game as GModel;
 use Illuminate\Support\Facades\DB;
+use App\View\Components\layout\col;
 use App\Http\Controllers\Controller;
 
 class GameController extends Controller
@@ -21,14 +23,54 @@ class GameController extends Controller
     {
         $this->game = $game;
         $message = [
-            'type'=>null,
-            'value'=>null
+            'type'=>null, //welcome
+            'value'=>null // "Welcome to a new game!"
         ];
+        $allGames = auth()->user()->games;
+        $allGamesLastPlayedLevel = collect($allGames)->map(function ($game) {
+            return $game->levels()->orderBy('updated_at', 'desc')->limit(1)->get()->first();
+        });
 
 
-
-        return view('app', ['message'=>$message]);
+        return view('select-game', ['message'=>$message, 'games' =>$allGamesLastPlayedLevel]);
     }
+
+    public function continue(Request $request, Game $game)
+    {
+        $this->game = auth()->user()->games()->where('id', '=', $request['game_id'])->get()->first()->levels()->orderBy('updated_at', 'desc')->limit(1)->get()->first();
+        $message = [
+            'type'=>null, //welcome
+            'value'=>null // "welcome back"
+        ];
+        $targetWord = Verb::where('id', '=', $this->game->targetWord)->limit(1)->get()->first();
+
+        $learnedWords = auth()->user()->learnedWords;
+
+        $learnedWordIds = $learnedWords->map(function ($word) {
+            return $word->verb_id;
+        });
+
+        // dd($learnedWordIds, $targetWord, $this->game);
+
+        $targetWord->meanings = unserialize($targetWord->meanings);
+        $targetWord->kanji = unserialize($targetWord->kanji);
+        $targetWord->shouldKnow = LearnedWord::where('verb_id', '=', $targetWord->id)->limit(1)->get()->first()->shouldKnow;
+        $this->targetWord = $targetWord;
+        
+        return view('game', [
+                'message'=>$message,
+                'id' => $this->game->id,
+                'dictionary' => unserialize($this->game->dictionary),
+                'score' => $this->game->score,
+                'streak' => $this->game->streak,
+                'level' => $this->game->level,
+                'topStreak' => $this->game->topStreak,
+                'topScore' => $this->game->topScore,
+                'targetWord' => $this->targetWord,
+                'inputMode' => $this->game->inputMode
+            ]);
+    }
+
     //
     public function store(Request $request)
     {
@@ -60,7 +102,7 @@ class GameController extends Controller
                 $message=$level->getWrongKanaMessage($targetWord);
             }
             // Return back a message saying what the issue is
-            return view('app', ['message'=>$message]);
+            return view('game', ['message'=>$message]);
         }
 
         if ($level->inputMode == 'meanings' && !is_null($request->input('meanings'))) {
@@ -142,7 +184,7 @@ class GameController extends Controller
 
                 $level->saveGame();
 
-                return view('app', ['message'=>$message]);
+                return view('game', ['message'=>$message]);
             }
 
 
@@ -196,6 +238,6 @@ class GameController extends Controller
             $level->saveGame();
         }
 
-        return view('app', ['message'=>$message]);
+        return view('game', ['message'=>$message]);
     }
 }

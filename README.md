@@ -203,7 +203,8 @@ helps associate the actual meaning of the kanji with the related words, and make
 
 -   I suppose we can use the kanji alive api to get a ranom kanji character, and then grab all words in our database and filter it based on whether or not it contains that kanji
 -   Confirmed can get 10 words that share the kanji alive api
--   Click on a kanji inside regular study mode to go into challenge mode and do a run of 10 kanji
+-   Click on a kanji inside regular study mode to go into challenge mode and do a run of 10 kanji then return to your level at current progress
+-   goto kanji challenge page, supply returning game, continue score and streak, and 10 word dictionary, run through a level
 
 ## TODO
 
@@ -218,7 +219,9 @@ helps associate the actual meaning of the kanji with the related words, and make
 
 --
 
-## Add level support
+## Fix New Game Generation
+
+-   New games should NOT be made from the user's learned word dictionary, it should get 3 random words, and check to see if they exist in the learnedWords, if not then create a new word, I know I already did this somewhere, and should make it a method for the level
 
 --
 

@@ -43,7 +43,7 @@ class Game extends Component
      */
     public function render()
     {
-        return view('components.game', [
+        return view('game', [
             'id' => $this->game->id,
             'dictionary' => unserialize($this->game->dictionary),
              'score' => $this->game->score,
