@@ -108,7 +108,7 @@ class Game
             'value'=>null
         ];
         $kanji = unserialize($verb->kanji);
-        $message['value'] = "Sorry! Please try again...";// . $kanji['word'] . " is " . $verb->politeForm;
+        $message['value'] = "Sorry! Please try again..." . $kanji['word'] . " is " . $verb->politeForm;
 
         return  $message;
     }

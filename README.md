@@ -202,6 +202,8 @@ Guess the missing kanji character
 helps associate the actual meaning of the kanji with the related words, and make more kanji more familiar and easier to understand when seen in unknown words
 
 -   I suppose we can use the kanji alive api to get a ranom kanji character, and then grab all words in our database and filter it based on whether or not it contains that kanji
+-   Confirmed can get 10 words that share the kanji alive api
+-   Click on a kanji inside regular study mode to go into challenge mode and do a run of 10 kanji
 
 ## TODO
 

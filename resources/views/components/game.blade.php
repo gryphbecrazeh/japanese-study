@@ -12,7 +12,7 @@
             <div class=" flex flex-col justify-center text-center text-gray-100 bold">
                 <p>
                     {{ $inputMode === 'kana' ? 'Enter the following' : 'Translate the following' }}</p>
-                <p class="text-6xl">{{ $targetWord->kanji['word'] }}</p>
+                <p class="text-6xl" data-controller="meaning">{{ $targetWord->kanji['word'] }}</p>
                 <p class="text-3xl">
                     {{ $targetWord->shouldKnow ? 'You should know this...' : $targetWord->politeForm }}
                 </p>
