@@ -22,8 +22,9 @@ class GameController extends Controller
         $games = $user->games()->orderBy('updated_at', 'desc')->get();
         $game_type = Route::current()->parameter('game_type');
         $game_id = Route::current()->parameter('game_id');
+        $message = $request['message'] ?? null;
+  
         $selected_game = null;
-
 
         if (!$game_id && !count($games) > 0) {
             $new_game = Game::create(['user_id' => $user->id]);
@@ -52,46 +53,90 @@ class GameController extends Controller
                'topStreak' => $current_level['topStreak'],
                 'topScore' => $current_level['topScore'],
                 'targetWord' => $current_level['targetWord'],
-                'inputMode' => $current_level['inputMode']
+                'inputMode' => $current_level['inputMode'],
+                'message' => json_decode($message)
                  ]);
     }
 
     public function store(Request $request)
     {
+        $message = ['type' => null, 'value'=>null];
+        
+        // Import Models
         $user = auth()->user();
         $game_type = Route::current()->parameter('game_type');
         $game_id = Route::current()->parameter('game_id');
         $selected_game = $user->games()->where([['id', '=', $game_id]])->get()->first();
-        $current_level = $selected_game->get_active_level()->toArray();
+
+        $current_level_model = $selected_game->get_active_level();
+        $score = $current_level_model->score;
+        $streak = $current_level_model->streak;
+        
+        // Explode the current level to update attributes
+        $current_level = $current_level_model->toArray();
+
+        $target_word_model = Verb::where('id', '=', $current_level['targetWord'])->get()->first();
+        $learned_word_model = $user->learned_words()->where('verb_id', '=', $target_word_model->id)->get()->first();
+
+        $current_level['targetWord'] = $target_word_model->toArray();
+        $level_meanings = \unserialize($current_level['targetWord']['meanings']);
+        $current_level['targetWord']['meanings'] = $level_meanings;
+
+        // Collect Inputs
         $kana =  $request->get('kana') ?? null;
-        $meanings = $request->get('meanings') ?? null;
-        $current_level['targetWord'] = Verb::where('id', '=', $current_level['targetWord'])->get()->first()->toArray();
-        $current_level['targetWord']['meanings'] = \unserialize($current_level['targetWord']['meanings']);
-        $current_level['targetWord']['kanji'] = \unserialize($current_level['targetWord']['kanji']);
-        $target_word_stats = $user->learned_words()->where('verb_id', '=', $current_level['targetWord']['id'])->get()->first()->toArray();
+        $meanings = \explode(', ', $request->get('meanings')) ?? [];
+
         // Check the Kana input
         if ($current_level['inputMode'] === 'kana' && $kana && !$current_level['kana']) {
             if ($kana === $current_level['targetWord']['politeForm']) {
-                // Increase times right
-                $target_word_stats['timesRight']++;
-                // Check if should know
-                if (($target_word_stats['timesWrong'] + 5) < $target_word_stats['timesRight'] && !$target_word_stats['shouldKnow']) {
-                    $target_word_stats['shouldKnow'] = true;
-                }
-                // Update global statistics
-                // Change level mode to meanings
-                //
-                dd($target_word_stats);
+                $learned_word_model->increaseTimesRight();
+                $current_level_model->setInputMode('meanings');
+                $message['type'] = 'success';
+                $message['value'] = 'Correct!';
+            //
             } else {
-                $target_word_stats['timesWrong']++;
-                if ($target_word_stats['timesWrong'] > $target_word_stats['timesRight'] &&$target_word_stats['shouldKnow']) {
-                    $target_word_stats['shouldKnow'] = false;
+                $learned_word_model->increaseTimesWrong();
+                $message['type'] = 'fail';
+                $message['value'] = 'Incorrect! Try Again...';
+            }
+            return \redirect()->route('game.verb.continue', ['game_id'=>$game_id, 'game_type' => $game_type, 'message' => \json_encode($message)]);
+        }
+
+        // Check the meanings input
+        if ($current_level['inputMode'] === 'meanings' && $meanings && !$current_level['meanings']) {
+            $correct_meanings = [];
+            foreach ($meanings as $index => $meaning) {
+                $meaning = str_replace('to ', '', $meaning);
+                if (in_array($meaning, $current_level['targetWord']['meanings'])) {
+                    $learned_word_model->increaseTimesRight();
+                    unset($current_level['targetWord']['meanings'][$index]);
+                    $score++;
+                    $correct_meanings []= $meaning;
                 }
             }
-            // update level
-            // redirect to back to continue route
-            return \redirect()->route('game.verb.continue', ['game_id'=>$game_id, 'game_type' => $game_type]);
         }
-        // Check the meanings input
+
+        $current_level_model->increaseScore($score);
+        if (!count($correct_meanings) > 0) {
+            $learned_word_model->increaseTimesWrong();
+            $score = 0;
+            $current_level_model->resetScore();
+            $streak = 0;
+            $current_level_model->resetStreak();
+            $message['type'] = 'fail';
+            $message['value'] = 'Incorrect! ' . $target_word_model->politeForm . ' means to ' . implode(', ', $level_meanings);
+        } else {
+            $message['type'] = 'success';
+            $message['value'] = 'Correct!';
+            $streak++;
+        }
+        $current_level_model->increaseStreak($streak);
+
+        // check if level needs to be increased
+        // Get new target word
+        $current_level_model->newTargetWord();
+        
+ 
+        return \redirect()->route('game.verb.continue', ['game_id'=>$game_id, 'game_type' => $game_type, 'message' => \json_encode($message)]);
     }
 }
