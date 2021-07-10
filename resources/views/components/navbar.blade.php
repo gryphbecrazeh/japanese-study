@@ -1,5 +1,5 @@
 {{-- <nav class="bg-white p-6 flex flex-col justify-between h-screen fixed left-0 top-0 w-50 z-50"> --}}
-<nav {{ $attributes->merge(['class' => ' border-blue-gray-800 p-6 flex flex-col h-screen z-1000 shadow-lg relative']) }}
+<nav {{ $attributes->merge(['class' => ' bg-blue-gray-800 p-6 flex flex-col h-screen z-1000 shadow-lg relative']) }}
     data-controller="nav">
     <svg class=" ml-auto collapse-button cursor-pointer h-10 text-gray-400 hover:text-white fill-current "
         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -32,11 +32,14 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                     </svg>
                 </div>
-                <x-nav.nav-link href="{{ route('game.kana') }}" label="Hiragana & Katakana" class="" />
-                <x-nav.nav-link href="{{ route('game.verb') }}" label="Verbs" class="" />
-                <x-nav.nav-link href="{{ route('game.adjective') }}" label="Adjectives" class="" />
-                <x-nav.nav-link href="{{ route('game.noun') }}" label="Nouns" class="" />
-                <x-nav.nav-link href="{{ route('game.kanji') }}" label="Kanji Challenge" class="" />
+                <x-nav.nav-link href="{{ route('game.verb.start', ['game_type' => 'kana']) }}" label="Hiragana & Katakana"
+                    class="" />
+                <x-nav.nav-link href="{{ route('game.verb.start', ['game_type' => 'verb']) }}" label="Verbs" class="" />
+                <x-nav.nav-link href="{{ route('game.verb.start', ['game_type' => 'adjective']) }}" label="Adjectives"
+                    class="" />
+                <x-nav.nav-link href="{{ route('game.verb.start', ['game_type' => 'noun']) }}" label="Nouns" class="" />
+                <x-nav.nav-link href="{{ route('game.verb.start', ['game_type' => 'kanji']) }}" label="Kanji Challenge"
+                    class="" />
 
             </x-nav.nav-section>
 

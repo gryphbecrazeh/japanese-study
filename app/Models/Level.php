@@ -19,7 +19,9 @@ class Level extends Model
         'streak',
         'topStreak',
         'score',
-        'topScore'
+        'topScore',
+        'game_id',
+        'targetWord'
     ];
     /**
      * The attributes that are mass assignable

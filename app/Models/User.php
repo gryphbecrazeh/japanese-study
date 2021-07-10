@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Game;
+use App\Models\Verb;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -47,8 +48,13 @@ class User extends Authenticatable
     {
         return $this->hasMany(Game::class, 'user_id');
     }
-    public function learnedWords()
+    public function learned_words()
     {
         return $this->hasMany(LearnedWord::class);
+    }
+
+    public function add_word(array $word)
+    {
+        return LearnedWord::create(['verb_id'=>$word['id'], 'user_id' => $this->id]);
     }
 }

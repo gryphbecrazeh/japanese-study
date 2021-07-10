@@ -1,5 +1,8 @@
 <x-wrapper>
-    <x-MessageContainer :message="$message ?? ''" />
+    @isset($message)
+        <x-MessageContainer :message="$message ?? ''" />
+
+    @endisset
     <x-layout.container>
         <x-layout.row class="h-full">
             <x-layout.col
@@ -21,14 +24,16 @@
                                     <p>
                                         {{ $inputMode === 'kana' ? 'Enter the following' : 'Translate the following' }}
                                     </p>
-                                    <p class="text-6xl" data-controller="meaning">{{ $targetWord->kanji['word'] }}</p>
+                                    <p class="text-6xl" data-controller="meaning">{{ $targetWord['kanji']['word'] }}
+                                    </p>
                                     <p class="text-3xl">
-                                        {{ $targetWord->shouldKnow ? 'You should know this...' : $targetWord->politeForm }}
+                                        {{ $targetWord['shouldKnow'] ? 'You should know this...' : $targetWord['politeForm'] }}
                                     </p>
                                 </div>
                             </div>
                         </div>
-                        <form action="{{ route('game.verb.post', ['game_id' => $id]) }}" method="POST">
+                        <form action="{{ route('game.verb.post', ['game_type' => $game_type, 'game_id' => $id]) }}"
+                            method="POST">
                             @csrf
                             <div class="w-full flex justify-center items-center">
                                 <div class="flex gap-2 justify-around bg-fog-100 rounded">
