@@ -23,8 +23,8 @@ class Message extends Component
             'default' => 'bg-white'
         ];
 
-        $this->type = $colors[$message['type']??'default'];
-        $this->value = $message['value'];
+        $this->type = $colors[$message->type??'default'];
+        $this->value = $message->value;
     }
 
     /**
