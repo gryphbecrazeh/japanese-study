@@ -50,13 +50,14 @@ class Level extends Model
         $this->topStreak = $this->streak;
         $this->save();
     }
-    public function increaseScore($int)
+    public function increaseScore(int $int)
     {
-        $this->score+=$int;
+        $this->score = (integer) $this->score +  (integer) $int;
         if ($this->score > $this->topScore) {
             $this->setTopScore();
         }
         $this->save();
+        return null;
     }
     public function resetScore()
     {
