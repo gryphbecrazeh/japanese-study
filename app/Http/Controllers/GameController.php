@@ -131,7 +131,12 @@ class GameController extends Controller
 
         // check if level needs to be increased
         // Get new target word
-        $current_level_model->newTargetWord();
+        $new_target_word_id = $current_level_model->newTargetWord();
+        $learned_word_model = $user->learned_words()->where('verb_id', '=', $new_target_word_id)->get()->first();
+
+        if (!$learned_word_model->timesRight > 0 && !$learned_word_model->timesWrong > 0) {
+            $message['value'] = 'New Word!' . $target_word_model->politeForm . ' means to ' . implode(', ', $level_meanings);
+        }
         
  
         return \redirect()->route('game.verb.continue', ['game_id'=>$game_id, 'game_type' => $game_type, 'message' => \json_encode($message)]);
