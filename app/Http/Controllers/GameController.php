@@ -69,8 +69,8 @@ class GameController extends Controller
         $selected_game = $user->games()->where([['id', '=', $game_id]])->get()->first();
 
         $current_level_model = $selected_game->get_active_level();
-        $score = $current_level_model->score;
-        $streak = $current_level_model->streak;
+        $score = (integer) $current_level_model->score;
+        $streak = (integer) $current_level_model->streak;
         
         // Explode the current level to update attributes
         $current_level = $current_level_model->toArray();
@@ -103,20 +103,17 @@ class GameController extends Controller
         }
 
         // Check the meanings input
-        if ($current_level['inputMode'] === 'meanings' && $meanings && !$current_level['meanings']) {
-            $correct_meanings = [];
-            foreach ($meanings as $index => $meaning) {
-                $meaning = str_replace('to ', '', $meaning);
-                if (in_array($meaning, $current_level['targetWord']['meanings'])) {
-                    $learned_word_model->increaseTimesRight();
-                    unset($current_level['targetWord']['meanings'][$index]);
-                    $score++;
-                    $correct_meanings []= $meaning;
-                }
+        $correct_meanings = [];
+        foreach ($meanings as $index => $meaning) {
+            $meaning = str_replace('to ', '', $meaning);
+            if (in_array($meaning, $current_level['targetWord']['meanings'])) {
+                $learned_word_model->increaseTimesRight();
+                unset($current_level['targetWord']['meanings'][$index]);
+                $correct_meanings []= $meaning;
             }
         }
 
-        $current_level_model->increaseScore($score);
+        $current_level_model->increaseScore(count($correct_meanings));
         if (!count($correct_meanings) > 0) {
             $learned_word_model->increaseTimesWrong();
             $score = 0;
@@ -127,7 +124,7 @@ class GameController extends Controller
             $message['value'] = 'Incorrect! ' . $target_word_model->politeForm . ' means to ' . implode(', ', $level_meanings);
         } else {
             $message['type'] = 'success';
-            $message['value'] = 'Correct!';
+            $message['value'] = 'Correct! ' . $target_word_model->politeForm . ' means to ' . implode(', ', $level_meanings);
             $streak++;
         }
         $current_level_model->increaseStreak($streak);
