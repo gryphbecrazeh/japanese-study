@@ -9,7 +9,9 @@
                 class="gap-2 w-full h-full relative flex  flex-col items-top justify-center sm:items-center sm:pt-0">
                 <x-layout.card class="bg-smoke-300 ">
                     <div class="container w-full flex flex-col justify-center items-center"
-                        data-controller="autokana game">
+                        data-controller="autokana game report"
+                        data-report-path-value="{{ route('report', ['verb_id' => $targetWord['id']]) }}">
+
                         <div class="flex flex-col mb-8">
                             <div class="top flex w-full flex-col items-center justify-center">
                                 <div class="notification" id="notification-container"></div>
@@ -45,6 +47,12 @@
                                         class="btn submit bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-r"
                                         id="submit-button" type="submit">
                                         Submit
+                                    </button>
+                                    <button
+                                        class="btn submit bg-yellow-500 hover:bg-yellow-700 text-black font-bold py-2 px-4 rounded-r"
+                                        id="report-button" type="button" data-report-target="trigger"
+                                        data-action='report#handleReport'>
+                                        Report
                                     </button>
                                 </div>
                             </div>

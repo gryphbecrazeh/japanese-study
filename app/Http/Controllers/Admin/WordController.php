@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Verb;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Route;
 
 class WordController extends Controller
 {
@@ -51,5 +53,13 @@ class WordController extends Controller
         $word->save();
         # code...
         return redirect(route('admin.manager.word'));
+    }
+    public function report(Request $request)
+    {
+        $verb_id = Route::current()->parameter('verb_id');
+        $verb = Verb::where('id', '=', $verb_id)->limit(1)->get()->first();
+        if ($verb) {
+            $verb->reportProblem();
+        }
     }
 }

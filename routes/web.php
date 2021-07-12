@@ -62,6 +62,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/support', [UserController::class, 'index'])->name('user.support'); // FOR REPORTING PROBLEMS, COMMENTS
     Route::post('/logout', [UserController::class, 'exit'])->name('user.logout'); // DEAUTH USER
     });
+    Route::prefix('/report')->group(function () {
+        Route::get('/{verb_id}', [WordController::class, 'report'])->name('report'); // Report word error
+
+        Route::post('/{verb_id}', [WordController::class, 'report'])->name('report'); // Report word error
+    });
 });
 // This is in the wrong place
 // Route::prefix('/api')->group(function () {
