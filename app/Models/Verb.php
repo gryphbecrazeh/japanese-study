@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -43,5 +44,15 @@ class Verb extends Model
     public function getId()
     {
         return $this->id;
+    }
+    public function reportProblem()
+    {
+        try {
+            $this->problem = true;
+            $this->save();
+            return true;
+        } catch (Exception $e) {
+            return \json_encode($e);
+        }
     }
 }
