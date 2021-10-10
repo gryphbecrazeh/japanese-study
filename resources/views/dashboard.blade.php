@@ -13,18 +13,20 @@
                         <strong class="component-title text-lg">
                             Top 5 Most Struggling Words
                         </strong>
-
                     </div>
                     <div class="component-contents w-full">
                         <ul class="w-full flex flex-col gap-2">
                             @foreach ($strugglingWords as $word)
+
                                 <li
                                     class="flex justify-between w-full bg-white rounded pl-3 pr-3 pt-1 pb-1 hover:shadow-md">
-                                    <div>{{ $word->kanji['word'] }}</div>
-                                    <div>{{ $word->timesWrong }} out of {{ $word->timesWrong + $word->timesRight }}
+                                    <div>{{ $word['kanji']['word'] }}</div>
+                                    <div>{{ $word['timesWrong'] }} out of
+                                        {{ $word['timesWrong'] + $word['timesRight'] }}
                                     </div>
                                 </li>
                             @endforeach
+
                         </ul>
                     </div>
 
