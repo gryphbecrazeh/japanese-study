@@ -5404,5 +5404,9 @@ class DatabaseSeeder extends Seeder
         })->toArray();
         $kanji_dictionary = array_merge($n5_kanji, $n4_kanji, $n3_kanji, $n2_kanji);
         DB::table('kanji')->insert($kanji_dictionary);
+
+
+        $this->call(UserTableSeeder::class);
+        $this->call(VerbTableSeeder::class);
     }
 }
