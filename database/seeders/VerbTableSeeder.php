@@ -47,8 +47,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to investigate, inquire',
                 'politeForm' => 'ちょうさをします',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'chousa',
@@ -62,8 +60,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to order (goods)',
                 'politeForm' => 'ちゅうもんをします',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'chuumon',
@@ -77,8 +73,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to decrease, reduce',
                 'politeForm' => 'げんしょうをします',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'genshou',
@@ -92,8 +86,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to announce, release',
                 'politeForm' => 'はっぴょうをします',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'happyou',
@@ -107,8 +99,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to release, be on sale, launch',
                 'politeForm' => 'はつばいをします',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'hatsubai',
@@ -122,8 +112,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to reply, answer',
                 'politeForm' => 'へんじをします',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'henji',
@@ -137,8 +125,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to change',
                 'politeForm' => 'へんかをします',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'henka',
@@ -152,8 +138,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to translate',
                 'politeForm' => 'ほんやくをします',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'honyaku',
@@ -167,8 +151,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to report',
                 'politeForm' => 'ほうこくをします',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'houkoku',
@@ -182,8 +164,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to print',
                 'politeForm' => 'いんさつをします',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'insatsu',
@@ -197,8 +177,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to develop',
                 'politeForm' => 'かいはつをします',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'kaihatsu',
@@ -212,8 +190,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to check, confirm',
                 'politeForm' => 'かくにんをします',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'kakunin',
@@ -227,8 +203,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to manage, control',
                 'politeForm' => 'かんりをします',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'kanri',
@@ -242,8 +216,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to complete',
                 'politeForm' => 'かんせいをします',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'kansei',
@@ -257,8 +229,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to exchange, replace',
                 'politeForm' => 'こうかんをします',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'koukan',
@@ -272,8 +242,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to break, damage, hurt',
                 'politeForm' => 'こしょうをします',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'koshou',
@@ -287,8 +255,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to contact, get in touch, inform',
                 'politeForm' => 'れんらくをします',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'renraku',
@@ -302,8 +268,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to practice, drill, execise, workout',
                 'politeForm' => 'れんしゅうをします',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'renshuu',
@@ -317,8 +281,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to divorce',
                 'politeForm' => 'りこんをします',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'rikon',
@@ -332,8 +294,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to use',
                 'politeForm' => 'りようをします',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'riyou',
@@ -347,8 +307,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to travel, make a trip',
                 'politeForm' => 'りょこうをします',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'ryokou',
@@ -362,8 +320,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to cook',
                 'politeForm' => 'りょうりをします',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'riouri',
@@ -377,8 +333,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to agree, support',
                 'politeForm' => 'さんせいをします',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'sansei',
@@ -392,8 +346,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to work',
                 'politeForm' => 'しごとをします',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'shigoto',
@@ -407,8 +359,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to have a meal',
                 'politeForm' => 'しょくじをします',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'shokuji',
@@ -422,8 +372,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to go on a business trip',
                 'politeForm' => 'しゅっちょうをします',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'shucchou',
@@ -437,8 +385,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to attend, appear, be present',
                 'politeForm' => 'しゅっせきをします',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'shusseki',
@@ -452,8 +398,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to repair, fix, service',
                 'politeForm' => 'しゅうりをします',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'shuuri',
@@ -467,8 +411,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to consult, discuss, talk with',
                 'politeForm' => 'そうだんをします',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'soudan',
@@ -482,8 +424,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to graduate',
                 'politeForm' => 'そつぎょうをします',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'sotsugyou',
@@ -497,8 +437,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to eat',
                 'politeForm' => 'たべます',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'taberu',
@@ -512,8 +450,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to drink',
                 'politeForm' => 'のみます',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'nomu',
@@ -527,8 +463,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to buy',
                 'politeForm' => 'かいます',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'kau',
@@ -542,8 +476,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to watch, look, see',
                 'politeForm' => 'みます',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'miru',
@@ -557,8 +489,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to show',
                 'politeForm' => 'みせます',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'miseru',
@@ -572,8 +502,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to write, draw, paint',
                 'politeForm' => 'かきます',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'kaku',
@@ -587,8 +515,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to send',
                 'politeForm' => 'おくります',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'okuru',
@@ -602,8 +528,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to make, produce, cook',
                 'politeForm' => 'つくります',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'tsukuru',
@@ -617,8 +541,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to use',
                 'politeForm' => 'つかいます',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'tsukau',
@@ -632,8 +554,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to go',
                 'politeForm' => 'いきます',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'iku',
@@ -647,8 +567,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to talk, speak',
                 'politeForm' => 'はなします',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'hanasu',
@@ -662,8 +580,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to increase',
                 'politeForm' => 'ふえます',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'fueru',
@@ -677,8 +593,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to decrease',
                 'politeForm' => 'へります',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'heru',
@@ -692,8 +606,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to learn',
                 'politeForm' => 'ならいます',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'narau',
@@ -707,8 +619,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to memorize, learn, master',
                 'politeForm' => 'おぼえます',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'oboeru',
@@ -722,8 +632,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to teach, inform, notice, let somebody know',
                 'politeForm' => 'おしえます',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'oshieru',
@@ -737,8 +645,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to check, investigate',
                 'politeForm' => 'しらべます',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'shiraberu',
@@ -752,8 +658,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to forget',
                 'politeForm' => 'わすれます',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'wasureru',
@@ -767,8 +671,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to begin, start, open',
                 'politeForm' => 'はじまります',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'hajimaru',
@@ -782,8 +684,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to finish, end',
                 'politeForm' => 'おわります',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'owaru',
@@ -797,8 +697,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to open',
                 'politeForm' => 'あけます',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'akeru',
@@ -812,8 +710,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to close',
                 'politeForm' => 'しめます',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'shimeru',
@@ -827,8 +723,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to win',
                 'politeForm' => 'かちます',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'katsu',
@@ -842,8 +736,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to lose (a game)',
                 'politeForm' => 'まけます',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'makeru',
@@ -857,8 +749,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to turn, curve',
                 'politeForm' => 'まがります',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'magaru',
@@ -872,8 +762,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to get on, ride',
                 'politeForm' => 'のります',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'noru',
@@ -887,8 +775,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to get off, descend, go down, disembark, dismount, step down, give up, quit',
                 'politeForm' => 'おります',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'oriru',
@@ -902,8 +788,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to translate',
                 'politeForm' => 'やくします',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'yakusu',
@@ -917,8 +801,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to lie down, go to bed',
                 'politeForm' => 'ねます',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'neru',
@@ -932,8 +814,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to get up, wake up, happen, occur',
                 'politeForm' => 'おきます',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'okiru',
@@ -947,8 +827,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to break, damage, hurt',
                 'politeForm' => 'こわれます',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'kowareru',
@@ -962,8 +840,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to repair, fix, cure, correct, heal',
                 'politeForm' => 'なおします',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'naosu',
@@ -977,8 +853,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to borrow, rent, hire, have a loan',
                 'politeForm' => 'かります',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'kariru',
@@ -992,8 +866,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to go up, rise',
                 'politeForm' => 'あがります',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'agaru',
@@ -1007,8 +879,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to go down, drop',
                 'politeForm' => 'さがります',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'sagaru',
@@ -1022,8 +892,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to sit, have a seat',
                 'politeForm' => 'すわります',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'suwaru',
@@ -1037,8 +905,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to wash, cleanse, rinse, purify, investigate, inquire into',
                 'politeForm' => 'あらいます',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'arau',
@@ -1052,8 +918,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to grill, bake, roast, toast',
                 'politeForm' => 'やきます',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'yaku',
@@ -1067,8 +931,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to cut',
                 'politeForm' => 'きります',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'kiru',
@@ -1082,8 +944,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to come',
                 'politeForm' => 'きます*',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'kuru',
@@ -1097,8 +957,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to take off (shoes, clothes)',
                 'politeForm' => 'ぬぎます',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'nugu',
@@ -1112,8 +970,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to do, play (something), carry out, perform',
                 'politeForm' => 'します*',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'suru',
@@ -1127,8 +983,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to phone, call (by phone)',
                 'politeForm' => 'でんわをします',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'denwa',
@@ -1142,8 +996,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to oppose, to be against',
                 'politeForm' => 'はんたいをします',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'hantai',
@@ -1157,8 +1009,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to get a job',
                 'politeForm' => 'しゅうしょくをします',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'shuushoku',
@@ -1172,8 +1022,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to meet / to match, fit',
                 'politeForm' => 'あいます',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'au',
@@ -1187,8 +1035,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'return',
                 'politeForm' => 'かえります',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'kaeru',
@@ -1202,8 +1048,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to have, be, at, exist (inanimate object)',
                 'politeForm' => 'あります',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'aru',
@@ -1217,8 +1061,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to have, be at, exist (animate object)',
                 'politeForm' => 'います',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'iru',
@@ -1232,8 +1074,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to stop',
                 'politeForm' => 'とまります',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'tomaru',
@@ -1247,8 +1087,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to stay (the night), lodge',
                 'politeForm' => 'とまります',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'tomaru',
@@ -1262,8 +1100,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to raise, lift up',
                 'politeForm' => 'あげます',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'ageru',
@@ -1277,8 +1113,6 @@ class VerbTableSeeder extends Seeder
             [
                 'meaning' => 'to recieve, be given',
                 'politeForm' => 'もらいます',
-                
-                
                 'timesWrong' => 0,
                 'timesRight' => 0,
                 'stem' => 'morau',
@@ -1291,17 +1125,17 @@ class VerbTableSeeder extends Seeder
             ],
         ])->map(function ($item) {
             DB::table('verbs')->insert([
-            'meaning' => $item['meaning'],
-            'politeForm' => $item['politeForm'],
-            'timesWrong' => $item['timesWrong'] ?? 0,
-            'timesRight' => $item['timesRight'] ?? 0,
-            'stem' => $item['stem'],
-            'verbType' => $item['verbType'],
-            'meanings' => serialize($item['meanings']),
-            'kanji' => serialize($item['kanji']),
-            'created_at' => '2021-03-01',
-            'updated_at' => '2021-03-01'
-        ]);
+                'meaning' => $item['meaning'],
+                'politeForm' => $item['politeForm'],
+                'timesWrong' => $item['timesWrong'] ?? 0,
+                'timesRight' => $item['timesRight'] ?? 0,
+                'stem' => $item['stem'],
+                'verbType' => $item['verbType'],
+                'meanings' => serialize($item['meanings']),
+                'kanji' => serialize($item['kanji']),
+                'created_at' => '2021-03-01',
+                'updated_at' => '2021-03-01'
+            ]);
 
             // return [
             //     'meaning' => $item['meaning'],
