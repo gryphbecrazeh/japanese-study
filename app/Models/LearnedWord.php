@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class LearnedWord extends Model
 {
@@ -24,16 +25,18 @@ class LearnedWord extends Model
      *
      * @var array
      */
-    protected $hidden = [
-    ];
+    protected $hidden = [];
 
     /**
      * The attributes that should be cast to native types.
      *
      * @var array
      */
-    protected $casts = [
-    ];
+    protected $casts = [];
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
     public function increaseTimesRight()
     {
         $this->timesRight++;
@@ -55,7 +58,6 @@ class LearnedWord extends Model
     public function getVerbObject()
     {
         $verbObject = Verb::where('id', '=', $this->verb_id)->limit(1)->get()->first();
-
         return $verbObject;
     }
 }
