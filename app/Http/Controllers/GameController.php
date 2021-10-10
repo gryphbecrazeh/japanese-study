@@ -19,6 +19,7 @@ class GameController extends Controller
     //
     public function index(Request $request)
     {
+        // Figure out the issue with word aggregation, why is it automatically failing and I have to refresh repeatedly to progress
         $user = auth()->user();
         $games = $user->games()->orderBy('updated_at', 'desc')->get();
         $game_type = Route::current()->parameter('game_type');
@@ -37,6 +38,12 @@ class GameController extends Controller
         if ($game_id) {
             $selected_game = $user->games()->where([['id', '=', $game_id]])->get()->first();
         }
+
+        if (!$selected_game) {
+            // If no game is found break
+            return null;
+        }
+
         $game_model = null;
 
         switch ($game_type) {
@@ -49,26 +56,33 @@ class GameController extends Controller
                 break;
         }
 
+        if ($game_type === 'kanji') {
+        }
 
-        $current_level = $selected_game->get_active_level()->toArray();
-        $current_level['targetWord'] = $game_model::where('id', '=', $current_level['targetWord'])->get()->first()->toArray();
-        $current_level['targetWord']['meanings'] = \unserialize($current_level['targetWord']['meanings']);
-        $current_level['targetWord']['kanji'] = \unserialize($current_level['targetWord']['kanji']);
-        $target_word_stats = $user->learned_words()->where('verb_id', '=', $current_level['targetWord']['id'])->get()->first();
-        $current_level['targetWord']['shouldKnow'] = $target_word_stats->shouldKnow;
-        return view('game-player', [
-            'id' => $game_id,
-            'game_type' => $game_type,
-            'dictionary' => \json_decode($current_level['dictionary']),
-            'score' => $current_level['score'] ?? 0,
-            'streak' => $current_level['streak'],
-            'level' => $current_level['level'],
-            'topStreak' => $current_level['topStreak'],
-            'topScore' => $current_level['topScore'],
-            'targetWord' => $current_level['targetWord'],
-            'inputMode' => $current_level['inputMode'],
-            'message' => json_decode($message)
-        ]);
+        if ($game_type === 'verb') {
+            $current_level = $selected_game->get_active_level()->toArray();
+            $current_level['targetWord'] = $game_model::where('id', '=', $current_level['targetWord'])->get()->first()->toArray();
+            $current_level['targetWord']['meanings'] = \unserialize($current_level['targetWord']['meanings']);
+            $current_level['targetWord']['kanji'] = \unserialize($current_level['targetWord']['kanji']);
+            $target_word_stats = $user->learned_words()->where('verb_id', '=', $current_level['targetWord']['id'])->get()->first();
+            $current_level['targetWord']['shouldKnow'] = $target_word_stats->shouldKnow;
+
+
+            return view('game-player', [
+                'id' => $game_id,
+                'game_type' => $game_type,
+                'dictionary' => \json_decode($current_level['dictionary']),
+                'score' => $current_level['score'] ?? 0,
+                'streak' => $current_level['streak'],
+                'level' => $current_level['level'],
+                'topStreak' => $current_level['topStreak'],
+                'topScore' => $current_level['topScore'],
+                'targetWord' => $current_level['targetWord'],
+                'inputMode' => $current_level['inputMode'],
+                'message' => json_decode($message)
+            ]);
+        }
+        return 'Game not ready';
     }
 
     public function store(Request $request)
