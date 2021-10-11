@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\GameController;
+use App\Models\Game;
 use App\Models\Verb;
 use App\Models\Kanji;
 use App\Models\LearnedWord;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
 
-class VerbGameController extends GameController
+class KanjiGameController extends Controller
 {
     public $game;
     public function __construct()
@@ -18,33 +19,35 @@ class VerbGameController extends GameController
     //
     public function index(Request $request)
     {
+        // Figure out the issue with word aggregation, why is it automatically failing and I have to refresh repeatedly to progress
         $user = auth()->user();
-        $games = $user->games()->orderBy('updated_at', 'desc')->get();
-        $game_type = Route::current()->parameter('game_type');
-        $game_id = Route::current()->parameter('game_id');
+        $game_type = 'kanji';
+        $game = $user->games()->where('game_type', '=', $game_type)->orderBy('updated_at', 'desc')->get()->first();
+        $game_model = Kanji::class;
+
         $message = $request['message'] ?? null;
 
-        $selected_game = null;
-
-        if (!$game_id && !count($games) > 0) {
-            $new_game = Game::create(['user_id' => $user->id]);
-            return \redirect()->route('game.verb.continue', ['game_type' => $game_type, 'game_id' => $new_game->id]);
-        } else {
-            $game_id = $games->first()->id;
+        if (!$game) {
+            // $new_game = new Game($game_type);
+            $game = Game::create(['user_id' => $user->id, 'game_type' => $game_type]);
         }
 
-        if ($game_id) {
-            $selected_game = $user->games()->where([['id', '=', $game_id]])->get()->first();
-        }
 
-        $current_level = $selected_game->get_active_level()->toArray();
-        $current_level['targetWord'] = Kanji::where('id', '=', $current_level['targetWord'])->get()->first()->toArray();
+        $current_level = $game->get_active_level($game_type)->toArray();
+        $current_level['targetWord'] = $game_model::where('id', '=', $current_level['targetWord'])->get()->first()->toArray();
         $current_level['targetWord']['meanings'] = \unserialize($current_level['targetWord']['meanings']);
-        $current_level['targetWord']['kanji'] = \unserialize($current_level['targetWord']['kanji']);
-        $target_word_stats = $user->learned_words()->where('verb_id', '=', $current_level['targetWord']['id'])->get()->first();
+
+
+        $current_level['targetWord']['kunyomi'] = \unserialize($current_level['targetWord']['kunyomi']);
+        $current_level['targetWord']['onyomi'] = \unserialize($current_level['targetWord']['onyomi']);
+
+        $target_word_stats = $user->learned_words()->where('kanji_id', '=', $current_level['targetWord']['id'])->get()->first();
         $current_level['targetWord']['shouldKnow'] = $target_word_stats->shouldKnow;
-        return view('game-player', [
-            'id' => $game_id,
+
+
+
+        return view('kanji-game-player', [
+            'id' => $game->id,
             'game_type' => $game_type,
             'dictionary' => \json_decode($current_level['dictionary']),
             'score' => $current_level['score'] ?? 0,
@@ -62,20 +65,43 @@ class VerbGameController extends GameController
     {
         $message = ['type' => null, 'value' => null];
 
+        /**
+         * 
+         * How to score
+         * 
+         * times right will only increase if you get the onyomi AND kunyomi right
+         * sometimes ONYOMI or KUNYOMI will not have answers, need to figure out if I will render out an empty question, or if I won't show the question at all
+         * 
+         * 
+         */
+
         // Import Models
         $user = auth()->user();
         $game_type = Route::current()->parameter('game_type');
         $game_id = Route::current()->parameter('game_id');
         $selected_game = $user->games()->where([['id', '=', $game_id]])->get()->first();
 
-        $current_level_model = $selected_game->get_active_level();
-        $score = (int) $current_level_model->score;
-        $streak = (int) $current_level_model->streak;
+        $current_level_model = $selected_game->get_active_level($game_type);
+        $score = (int) $current_level_model->score ?? 0;
+        $streak = (int) $current_level_model->streak ?? 0;
 
         // Explode the current level to update attributes
         $current_level = $current_level_model->toArray();
 
-        $target_word_model = Kanji::where('id', '=', $current_level['targetWord'])->get()->first();
+        $game_model = null;
+
+        switch ($game_type) {
+            case 'kanji':
+                $game_model = Kanji::class;
+                break;
+            default:
+            case 'verb':
+                $game_model = Verb::class;
+                break;
+        }
+
+
+        $target_word_model = $game_model::where('id', '=', $current_level['targetWord'])->get()->first();
         $learned_word_model = $user->learned_words()->where('verb_id', '=', $target_word_model->id)->get()->first();
 
         $current_level['targetWord'] = $target_word_model->toArray();
