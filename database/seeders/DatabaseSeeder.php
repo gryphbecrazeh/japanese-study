@@ -5376,34 +5376,34 @@ class DatabaseSeeder extends Seeder
 
         $n5_kanji = collect($n5_kanji)->map(function ($kanji) {
             $kanji['meanings'] = serialize($kanji['meanings']);
-            $kanji['onyomi'] = serialize($kanji['meanings']);
-            $kanji['kunyomi'] = serialize($kanji['meanings']);
+            $kanji['onyomi'] = serialize($kanji['onyomi']);
+            $kanji['kunyomi'] = serialize($kanji['kunyomi']);
             $kanji['proficiency'] = 'n5';
             return $kanji;
         })->toArray();
         $n4_kanji = collect($n4_kanji)->map(function ($kanji) {
             $kanji['meanings'] = serialize($kanji['meanings']);
-            $kanji['onyomi'] = serialize($kanji['meanings']);
-            $kanji['kunyomi'] = serialize($kanji['meanings']);
+            $kanji['onyomi'] = serialize($kanji['onyomi']);
+            $kanji['kunyomi'] = serialize($kanji['kunyomi']);
             $kanji['proficiency'] = 'n4';
             return $kanji;
         })->toArray();
         $n3_kanji = collect($n3_kanji)->map(function ($kanji) {
             $kanji['meanings'] = serialize($kanji['meanings']);
-            $kanji['onyomi'] = serialize($kanji['meanings']);
-            $kanji['kunyomi'] = serialize($kanji['meanings']);
+            $kanji['onyomi'] = serialize($kanji['onyomi']);
+            $kanji['kunyomi'] = serialize($kanji['kunyomi']);
             $kanji['proficiency'] = 'n3';
             return $kanji;
         })->toArray();
         $n2_kanji = collect($n2_kanji)->map(function ($kanji) {
             $kanji['meanings'] = serialize($kanji['meanings']);
-            $kanji['onyomi'] = serialize($kanji['meanings']);
-            $kanji['kunyomi'] = serialize($kanji['meanings']);
+            $kanji['onyomi'] = serialize($kanji['onyomi']);
+            $kanji['kunyomi'] = serialize($kanji['kunyomi']);
             $kanji['proficiency'] = 'n2';
             return $kanji;
         })->toArray();
         $kanji_dictionary = array_merge($n5_kanji, $n4_kanji, $n3_kanji, $n2_kanji);
-        DB::table('kanji')->insert($kanji_dictionary);
+        DB::table('kanjis')->insert($kanji_dictionary);
 
 
         $this->call(UserTableSeeder::class);
