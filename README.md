@@ -208,6 +208,8 @@ helps associate the actual meaning of the kanji with the related words, and make
 
 ## TODO
 
+-   Combine Kanji and Verb tables into one, or create a new learned word table with a foreign id to the kanji
+
 ## Dashboard
 
 -   Show struggling words or none
