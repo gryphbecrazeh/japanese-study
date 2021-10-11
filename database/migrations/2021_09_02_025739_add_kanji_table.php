@@ -13,7 +13,7 @@ class AddKanjiTable extends Migration
      */
     public function up()
     {
-        Schema::create('kanji', function (Blueprint $table) {
+        Schema::create('kanjis', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
             $table->string('meanings')->default('');
@@ -34,6 +34,6 @@ class AddKanjiTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('kanji');
+        Schema::dropIfExists('kanjis');
     }
 }

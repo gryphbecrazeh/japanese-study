@@ -17,7 +17,7 @@ class CreateLearnedWordsTable extends Migration
             $table->id();
             $table->timestamps();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('verb_id')->constrained()->onDelete('cascade');
+            $table->foreignId('verb_id')->nullable()->constrained()->onDelete('cascade');
             $table->integer('timesRight')->default(0);
             $table->integer('timesWrong')->default(0);
             $table->boolean('shouldKnow')->default(false);

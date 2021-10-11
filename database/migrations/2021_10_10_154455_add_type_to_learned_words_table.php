@@ -15,7 +15,7 @@ class AddTypeToLearnedWordsTable extends Migration
     {
         Schema::table('learned_words', function (Blueprint $table) {
             //
-            $table->string('gametype')->nullable();
+            $table->string('game_type');
         });
     }
 
