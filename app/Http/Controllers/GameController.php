@@ -21,15 +21,16 @@ class GameController extends Controller
     {
         // Figure out the issue with word aggregation, why is it automatically failing and I have to refresh repeatedly to progress
         $user = auth()->user();
-        $games = $user->games()->orderBy('updated_at', 'desc')->get();
         $game_type = Route::current()->parameter('game_type');
         $game_id = Route::current()->parameter('game_id');
+        $games = $user->games()->where('game_type', '=', $game_type)->orderBy('updated_at', 'desc')->get();
         $message = $request['message'] ?? null;
 
         $selected_game = null;
 
         if (!$game_id && !count($games) > 0) {
-            $new_game = Game::create(['user_id' => $user->id]);
+            // $new_game = new Game($game_type);
+            $new_game = Game::create(['user_id' => $user->id, 'game_type' => $game_type]);
             return \redirect()->route('game.verb.continue', ['game_type' => $game_type, 'game_id' => $new_game->id]);
         } else {
             $game_id = $games->first()->id;
@@ -57,10 +58,11 @@ class GameController extends Controller
         }
 
         if ($game_type === 'kanji') {
+            return \redirect()->route('game.kanji.continue', ['game_type' => $game_type, 'game_id' => $game_id]);
         }
 
         if ($game_type === 'verb') {
-            $current_level = $selected_game->get_active_level()->toArray();
+            $current_level = $selected_game->get_active_level($game_type)->toArray();
             $current_level['targetWord'] = $game_model::where('id', '=', $current_level['targetWord'])->get()->first()->toArray();
             $current_level['targetWord']['meanings'] = \unserialize($current_level['targetWord']['meanings']);
             $current_level['targetWord']['kanji'] = \unserialize($current_level['targetWord']['kanji']);
@@ -95,9 +97,9 @@ class GameController extends Controller
         $game_id = Route::current()->parameter('game_id');
         $selected_game = $user->games()->where([['id', '=', $game_id]])->get()->first();
 
-        $current_level_model = $selected_game->get_active_level();
-        $score = (int) $current_level_model->score;
-        $streak = (int) $current_level_model->streak;
+        $current_level_model = $selected_game->get_active_level($game_type);
+        $score = (int) $current_level_model->score ?? 0;
+        $streak = (int) $current_level_model->streak ?? 0;
 
         // Explode the current level to update attributes
         $current_level = $current_level_model->toArray();
