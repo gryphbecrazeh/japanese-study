@@ -55,6 +55,8 @@ class User extends Authenticatable
 
     public function add_word(array $word)
     {
-        return LearnedWord::create(['verb_id' => $word['id'], 'user_id' => $this->id]);
+        $dynamic_id = $word['game_type'] . '_id';
+        $config = [$dynamic_id => $word['id'], 'user_id' => $this->id, 'game_type' => $word['game_type']];
+        return LearnedWord::create($config);
     }
 }

@@ -23,22 +23,21 @@ class Level extends Model
         'score',
         'topScore',
         'game_id',
-        'targetWord'
+        'targetWord',
+        'inputMode'
     ];
     /**
      * The attributes that are mass assignable
      *
      * @var array
      */
-    protected $hidden = [
-    ];
+    protected $hidden = [];
     /**
      * The attributes that should be cast to native types
      *
      * @var array
      */
-    protected $casts = [
-    ];
+    protected $casts = [];
 
     public function setTopScore()
     {
@@ -52,7 +51,7 @@ class Level extends Model
     }
     public function increaseScore(int $int)
     {
-        $this->score = (integer) $this->score +  (integer) $int;
+        $this->score = (int) $this->score +  (int) $int;
         if ($this->score > $this->topScore) {
             $this->setTopScore();
         }
@@ -74,14 +73,14 @@ class Level extends Model
     }
     public function resetStreak()
     {
-        $this->streak=0;
+        $this->streak = 0;
         $this->save();
     }
     public function newTargetWord()
     {
         $user = auth()->user();
         $dictionary = collect(json_decode($this->dictionary))->filter(function ($id) {
-            return (integer) $id !== (integer) $this->targetWord;
+            return (int) $id !== (int) $this->targetWord;
         })->toArray();
         $this->setInputMode('kana');
         return $this->setTargetWord(collect(Arr::random($dictionary, 1))->first());

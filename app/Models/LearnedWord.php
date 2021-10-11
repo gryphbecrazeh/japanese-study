@@ -17,7 +17,9 @@ class LearnedWord extends Model
      */
     protected $fillable = [
         'verb_id',
+        'kanji_id',
         'user_id',
+        'game_type'
     ];
 
     /**
