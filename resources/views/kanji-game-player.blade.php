@@ -21,6 +21,7 @@
                                     <p>Top Score: {{ $topScore }}</p>
                                     <p>Best Streak: {{ $topStreak }}</p>
                                     <p>Word Count:{{ count($dictionary) }}</p>
+                                    <p>Mode: {{ $inputMode }}</p>
                                 </div>
                                 <div class=" flex flex-col justify-center text-center text-gray-100 bold">
                                     <p>
@@ -43,7 +44,7 @@
                                     @else
 
                                         <p class="text-3xl">
-                                            {{ implode(', ', $targetWord['onyomi']) }}
+                                            {{ implode(', ', $targetWord[$inputMode]) }}
                                         </p>
 
                                     @endif
