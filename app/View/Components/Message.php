@@ -22,8 +22,8 @@ class Message extends Component
             'new' => 'bg-blue-700',
             'default' => 'bg-white'
         ];
-
-        $this->type = $colors[$message->type??'default'];
+        $message = json_decode($message);
+        $this->type = $colors[$message->type ?? 'default'];
         $this->value = $message->value;
     }
 
@@ -34,6 +34,6 @@ class Message extends Component
      */
     public function render()
     {
-        return view('components.element.message', ['type' => $this->type, 'message'=>$this->value]);
+        return view('components.element.message', ['type' => $this->type, 'message' => $this->value]);
     }
 }

@@ -6,16 +6,14 @@ use Illuminate\View\Component;
 
 class MessageContainer extends Component
 {
-    public $message;
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($message = null)
+    public function __construct()
     {
         //
-        $this->message = $message ?? null;
     }
 
     /**
@@ -25,6 +23,6 @@ class MessageContainer extends Component
      */
     public function render()
     {
-        return view('components.message-container', ['message'=>$this->message]);
+        return view('components.message-container');
     }
 }
