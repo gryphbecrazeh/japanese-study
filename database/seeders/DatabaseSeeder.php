@@ -1186,7 +1186,7 @@ class DatabaseSeeder extends Seeder
                     "あ(う)"
                 ],
                 "meanings" => [
-                    "meeting; meet"
+                    "meeting, meet"
                 ]
             ],
             [
@@ -2547,7 +2547,7 @@ class DatabaseSeeder extends Seeder
                 ],
                 "meanings" => [
                     "wake up",
-                    "get up; rouse"
+                    "get up, rouse"
                 ]
             ],
             [
@@ -4367,7 +4367,7 @@ class DatabaseSeeder extends Seeder
                     "おのおの"
                 ],
                 "meanings" => [
-                    "each; every; either"
+                    "each, every, either"
                 ]
             ],
             [
@@ -4391,7 +4391,7 @@ class DatabaseSeeder extends Seeder
                     "かわ"
                 ],
                 "meanings" => [
-                    "leather; skin; reform; become serious"
+                    "leather, skin, reform, become serious"
                 ]
             ],
             [
@@ -4403,7 +4403,7 @@ class DatabaseSeeder extends Seeder
                     "むら"
                 ],
                 "meanings" => [
-                    "village; town"
+                    "village, town"
                 ]
             ],
             [
@@ -4415,7 +4415,7 @@ class DatabaseSeeder extends Seeder
                     "いきお(い)"
                 ],
                 "meanings" => [
-                    "forces; energy; military strength"
+                    "forces, energy, military strength"
                 ]
             ],
             [
@@ -4427,7 +4427,7 @@ class DatabaseSeeder extends Seeder
                     "へ(る)"
                 ],
                 "meanings" => [
-                    "dwindle; decrease; reduce"
+                    "dwindle, decrease, reduce"
                 ]
             ],
             [
@@ -4454,7 +4454,7 @@ class DatabaseSeeder extends Seeder
                     ""
                 ],
                 "meanings" => [
-                    "tax; duty"
+                    "tax, duty"
                 ]
             ],
             [
@@ -4466,7 +4466,7 @@ class DatabaseSeeder extends Seeder
                     "いとな(む)"
                 ],
                 "meanings" => [
-                    "occupation; camp; perform; build; conduct (business)"
+                    "occupation, camp, perform, build, conduct (business)"
                 ]
             ],
             [
@@ -4478,7 +4478,7 @@ class DatabaseSeeder extends Seeder
                     "くら(べる)"
                 ],
                 "meanings" => [
-                    "compare; race; ratio"
+                    "compare, race, ratio"
                 ]
             ],
             [
@@ -4490,7 +4490,7 @@ class DatabaseSeeder extends Seeder
                     "ふせ(ぐ)"
                 ],
                 "meanings" => [
-                    "ward off; defend; protect; resist"
+                    "ward off, defend, protect, resist"
                 ]
             ],
             [
@@ -4502,7 +4502,7 @@ class DatabaseSeeder extends Seeder
                     "おぎな(う)"
                 ],
                 "meanings" => [
-                    "supplement; supply; offset; compensate"
+                    "supplement, supply, offset, compensate"
                 ]
             ],
             [
@@ -4528,7 +4528,7 @@ class DatabaseSeeder extends Seeder
                     "みちび(く)"
                 ],
                 "meanings" => [
-                    "guidance; leading; conduct; usher"
+                    "guidance, leading, conduct, usher"
                 ]
             ],
             [
@@ -4552,7 +4552,7 @@ class DatabaseSeeder extends Seeder
                     "そろ"
                 ],
                 "meanings" => [
-                    "calculate; divining; number; probability"
+                    "calculate, divining, number, probability"
                 ]
             ],
             [
@@ -4579,7 +4579,7 @@ class DatabaseSeeder extends Seeder
                     "の(べる)"
                 ],
                 "meanings" => [
-                    "mention; state; speak"
+                    "mention, state, speak"
                 ]
             ],
             [
@@ -4591,7 +4591,7 @@ class DatabaseSeeder extends Seeder
                     ""
                 ],
                 "meanings" => [
-                    "line; track"
+                    "line, track"
                 ]
             ],
             [
@@ -4603,7 +4603,7 @@ class DatabaseSeeder extends Seeder
                     ""
                 ],
                 "meanings" => [
-                    "agriculture; farmers"
+                    "agriculture, farmers"
                 ]
             ],
             [
@@ -4615,7 +4615,7 @@ class DatabaseSeeder extends Seeder
                     "す"
                 ],
                 "meanings" => [
-                    "state; province"
+                    "state, province"
                 ]
             ],
             [
@@ -4628,7 +4628,7 @@ class DatabaseSeeder extends Seeder
                     "たけ(し)"
                 ],
                 "meanings" => [
-                    "warrior; military; chivalry; arms"
+                    "warrior, military, chivalry, arms"
                 ]
             ],
             [
@@ -4641,7 +4641,7 @@ class DatabaseSeeder extends Seeder
                     "かたど(る)"
                 ],
                 "meanings" => [
-                    "elephant; pattern after; image; shape"
+                    "elephant, pattern after, image, shape"
                 ]
             ],
             [
@@ -4653,7 +4653,7 @@ class DatabaseSeeder extends Seeder
                     ""
                 ],
                 "meanings" => [
-                    "range; region; limits; stage; level"
+                    "range, region, limits, stage, level"
                 ]
             ],
             [
@@ -4665,7 +4665,7 @@ class DatabaseSeeder extends Seeder
                     "ひたい"
                 ],
                 "meanings" => [
-                    "forehead; tablet; framed picture; sum; amount; volume"
+                    "forehead, tablet, framed picture, sum, amount, volume"
                 ]
             ],
             [
@@ -4690,7 +4690,7 @@ class DatabaseSeeder extends Seeder
                     "にな(う)"
                 ],
                 "meanings" => [
-                    "shouldering; carry; raise; bear"
+                    "shouldering, carry, raise, bear"
                 ]
             ],
             [
@@ -4715,7 +4715,7 @@ class DatabaseSeeder extends Seeder
                     "ほ(める)"
                 ],
                 "meanings" => [
-                    "prize; reward; praise"
+                    "prize, reward, praise"
                 ]
             ],
             [
@@ -4728,7 +4728,7 @@ class DatabaseSeeder extends Seeder
                     "ほと(り)"
                 ],
                 "meanings" => [
-                    "environs; boundary; border; vicinity"
+                    "environs, boundary, border, vicinity"
                 ]
             ],
             [
@@ -4740,7 +4740,7 @@ class DatabaseSeeder extends Seeder
                     "つく(る)"
                 ],
                 "meanings" => [
-                    "create; make; structure; physique"
+                    "create, make, structure, physique"
                 ]
             ],
             [
@@ -4753,7 +4753,7 @@ class DatabaseSeeder extends Seeder
                     "かぶ(る)"
                 ],
                 "meanings" => [
-                    "incur; cover; shelter; wear; put on"
+                    "incur, cover, shelter, wear, put on"
                 ]
             ],
             [
@@ -4765,7 +4765,7 @@ class DatabaseSeeder extends Seeder
                     "わざ"
                 ],
                 "meanings" => [
-                    "skill; art; craft; ability; vocation; arts"
+                    "skill, art, craft, ability, vocation, arts"
                 ]
             ],
             [
@@ -4777,7 +4777,7 @@ class DatabaseSeeder extends Seeder
                     "ひく(い)"
                 ],
                 "meanings" => [
-                    "lower; short; humble"
+                    "lower, short, humble"
                 ]
             ],
             [
@@ -4817,7 +4817,7 @@ class DatabaseSeeder extends Seeder
                     ""
                 ],
                 "meanings" => [
-                    "individual; counter for articles"
+                    "individual, counter for articles"
                 ]
             ],
             [
@@ -4857,7 +4857,7 @@ class DatabaseSeeder extends Seeder
                     ""
                 ],
                 "meanings" => [
-                    "brain; memory"
+                    "brain, memory"
                 ]
             ],
             [
@@ -4870,7 +4870,7 @@ class DatabaseSeeder extends Seeder
                     "きわ(める)"
                 ],
                 "meanings" => [
-                    "poles; settlement; conclusion; end"
+                    "poles, settlement, conclusion, end"
                 ]
             ],
             [
@@ -4882,7 +4882,7 @@ class DatabaseSeeder extends Seeder
                     "ふく(む)"
                 ],
                 "meanings" => [
-                    "contain; include"
+                    "contain, include"
                 ]
             ],
             [
@@ -4894,7 +4894,7 @@ class DatabaseSeeder extends Seeder
                     "くら"
                 ],
                 "meanings" => [
-                    "storehouse; hide; own; have; possess"
+                    "storehouse, hide, own, have, possess"
                 ]
             ],
             [
@@ -4906,7 +4906,7 @@ class DatabaseSeeder extends Seeder
                     "はか(る)"
                 ],
                 "meanings" => [
-                    "quantity; measure; weight; amount"
+                    "quantity, measure, weight, amount"
                 ]
             ],
             [
@@ -4918,7 +4918,7 @@ class DatabaseSeeder extends Seeder
                     "かた"
                 ],
                 "meanings" => [
-                    "type; model"
+                    "type, model"
                 ]
             ],
             [
@@ -4930,7 +4930,7 @@ class DatabaseSeeder extends Seeder
                     "まし(て)"
                 ],
                 "meanings" => [
-                    "condition; situation"
+                    "condition, situation"
                 ]
             ],
             [
@@ -4942,7 +4942,7 @@ class DatabaseSeeder extends Seeder
                     "はり"
                 ],
                 "meanings" => [
-                    "needle; pin; staple; stinger"
+                    "needle, pin, staple, stinger"
                 ]
             ],
             [
@@ -4954,7 +4954,7 @@ class DatabaseSeeder extends Seeder
                     "もっぱ(ら)"
                 ],
                 "meanings" => [
-                    "specialty; exclusive; mainly; solely"
+                    "specialty, exclusive, mainly, solely"
                 ]
             ],
             [
@@ -4979,7 +4979,7 @@ class DatabaseSeeder extends Seeder
                     ""
                 ],
                 "meanings" => [
-                    "history; chronicle"
+                    "history, chronicle"
                 ]
             ],
             [
@@ -4991,7 +4991,7 @@ class DatabaseSeeder extends Seeder
                     ""
                 ],
                 "meanings" => [
-                    "stair; counter for building story"
+                    "stair, counter for building story"
                 ]
             ],
             [
@@ -5003,7 +5003,7 @@ class DatabaseSeeder extends Seeder
                     "くだ"
                 ],
                 "meanings" => [
-                    "pipe; tube; wind instrument; control; jurisdiction"
+                    "pipe, tube, wind instrument, control, jurisdiction"
                 ]
             ],
             [
@@ -5016,7 +5016,7 @@ class DatabaseSeeder extends Seeder
                     "つわもの"
                 ],
                 "meanings" => [
-                    "soldier; private; troops; army"
+                    "soldier, private, troops, army"
                 ]
             ],
             [
@@ -5028,7 +5028,7 @@ class DatabaseSeeder extends Seeder
                     "つ(ぐ)"
                 ],
                 "meanings" => [
-                    "touch; contact; adjoin; piece together"
+                    "touch, contact, adjoin, piece together"
                 ]
             ],
             [
@@ -5041,7 +5041,7 @@ class DatabaseSeeder extends Seeder
                     "こま(かい)"
                 ],
                 "meanings" => [
-                    "slender; narrow; detailed; precise"
+                    "slender, narrow, detailed, precise"
                 ]
             ],
             [
@@ -5053,7 +5053,7 @@ class DatabaseSeeder extends Seeder
                     "き(く)"
                 ],
                 "meanings" => [
-                    "merit; efficacy; efficiency; benefit"
+                    "merit, efficacy, efficiency, benefit"
                 ]
             ],
             [
@@ -5066,7 +5066,7 @@ class DatabaseSeeder extends Seeder
                     "まる(い)"
                 ],
                 "meanings" => [
-                    "round; full (month); perfection"
+                    "round, full (month); perfection"
                 ]
             ],
             [
@@ -5078,7 +5078,7 @@ class DatabaseSeeder extends Seeder
                     "いりえ"
                 ],
                 "meanings" => [
-                    "gulf; bay; inlet"
+                    "gulf, bay, inlet"
                 ]
             ],
             [
@@ -5104,7 +5104,7 @@ class DatabaseSeeder extends Seeder
                     "はぶ(く)"
                 ],
                 "meanings" => [
-                    "focus; government ministry; conserve"
+                    "focus, government ministry, conserve"
                 ]
             ],
             [
@@ -5117,7 +5117,7 @@ class DatabaseSeeder extends Seeder
                     "もと"
                 ],
                 "meanings" => [
-                    "old times; old things; former; ex-"
+                    "old times, old things, former, ex-"
                 ]
             ],
             [
@@ -5153,7 +5153,7 @@ class DatabaseSeeder extends Seeder
                     "まわ(り)"
                 ],
                 "meanings" => [
-                    "circumference; circuit; lap"
+                    "circumference, circuit, lap"
                 ]
             ],
             [
@@ -5180,7 +5180,7 @@ class DatabaseSeeder extends Seeder
                     "と"
                 ],
                 "meanings" => [
-                    "door; counter for houses"
+                    "door, counter for houses"
                 ]
             ],
             [
@@ -5192,7 +5192,7 @@ class DatabaseSeeder extends Seeder
                     ""
                 ],
                 "meanings" => [
-                    "center; middle"
+                    "center, middle"
                 ]
             ],
             [
@@ -5216,7 +5216,7 @@ class DatabaseSeeder extends Seeder
                     "あ(む)"
                 ],
                 "meanings" => [
-                    "compilation; knit; braid; twist; editing"
+                    "compilation, knit, braid, twist, editing"
                 ]
             ],
             [
@@ -5228,7 +5228,7 @@ class DatabaseSeeder extends Seeder
                     "さが(す)"
                 ],
                 "meanings" => [
-                    "search; look for; locate"
+                    "search, look for, locate"
                 ]
             ],
             [
@@ -5252,7 +5252,7 @@ class DatabaseSeeder extends Seeder
                     "こ(える)"
                 ],
                 "meanings" => [
-                    "transcend; super-; ultra-"
+                    "transcend, super-; ultra-"
                 ]
             ],
             [
@@ -5280,7 +5280,7 @@ class DatabaseSeeder extends Seeder
                     ""
                 ],
                 "meanings" => [
-                    "heal; cure"
+                    "heal, cure"
                 ]
             ],
             [
@@ -5292,7 +5292,7 @@ class DatabaseSeeder extends Seeder
                     "と(る)"
                 ],
                 "meanings" => [
-                    "pick; take; fetch; take up"
+                    "pick, take, fetch, take up"
                 ]
             ],
             [
@@ -5319,7 +5319,7 @@ class DatabaseSeeder extends Seeder
                     "せ(る)"
                 ],
                 "meanings" => [
-                    "compete with; bid; contest; race"
+                    "compete with, bid, contest, race"
                 ]
             ],
             [
@@ -5331,7 +5331,7 @@ class DatabaseSeeder extends Seeder
                     ""
                 ],
                 "meanings" => [
-                    "jammed in; shellfish; mediate"
+                    "jammed in, shellfish, mediate"
                 ]
             ],
             [
@@ -5343,7 +5343,7 @@ class DatabaseSeeder extends Seeder
                     "ね"
                 ],
                 "meanings" => [
-                    "root; radical"
+                    "root, radical"
                 ]
             ],
             [
@@ -5369,7 +5369,7 @@ class DatabaseSeeder extends Seeder
                     ""
                 ],
                 "meanings" => [
-                    "curriculum; continuation; passage of time"
+                    "curriculum, continuation, passage of time"
                 ]
             ]
         ];
