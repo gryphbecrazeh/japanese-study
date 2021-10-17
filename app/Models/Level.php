@@ -76,13 +76,13 @@ class Level extends Model
         $this->streak = 0;
         $this->save();
     }
-    public function newTargetWord()
+    public function newTargetWord($input_mode = 'kana')
     {
         $user = auth()->user();
         $dictionary = collect(json_decode($this->dictionary))->filter(function ($id) {
             return (int) $id !== (int) $this->targetWord;
         })->toArray();
-        $this->setInputMode('kana');
+        $this->setInputMode($input_mode);
         return $this->setTargetWord(collect(Arr::random($dictionary, 1))->first());
     }
     public function setTargetWord($id)
