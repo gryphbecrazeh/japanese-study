@@ -60,6 +60,9 @@ class LearnedWord extends Model
     public function getVerbObject()
     {
         $verbObject = Verb::where('id', '=', $this->verb_id)->limit(1)->get()->first();
+        if (!$verbObject) {
+            $verbObject = Kanji::where('id', '=', $this->kanji_id)->limit(1)->get()->first();
+        }
         return $verbObject;
     }
 }
