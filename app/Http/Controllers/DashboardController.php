@@ -18,7 +18,7 @@ class DashboardController extends Controller
         $strugglingWords = auth()->user()->learned_words()->limit(5)->orderBy('timesWrong', 'desc')->get()->filter(function ($word) {
             return $word->timesWrong;
         })->map(function ($word) {
-            $fetchedWord = collect($word->getVerbObject())->toArray();
+            $fetchedWord = collect($word->get_global_word_object())->toArray();
             $fetchedWord['meanings'] = \unserialize($fetchedWord['meanings']);
             $fetchedWord['kanji'] = \unserialize($fetchedWord['kanji']);
 
