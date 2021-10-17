@@ -83,6 +83,8 @@ class KanjiGameController extends Controller
 
         $game = $user->games()->where('game_type', '=', $game_type)->orderBy('updated_at', 'desc')->get()->first();
 
+        $message = ['type' => '', 'message' => ''];
+
         $current_level_model = $game->get_active_level($game_type);
         $score = (int) $current_level_model->score ?? 0;
         $streak = (int) $current_level_model->streak ?? 0;
@@ -122,8 +124,9 @@ class KanjiGameController extends Controller
                     }
                 }
                 if ($matches > 0) {
-                    $learned_word_model->increaseTimesRight();
-                    $current_level_model->setInputMode('kunyomi');
+                    // $learned_word_model->increaseTimesRight();
+                    $nextMode = $current_level['targetWord']['kunyomi'] != [] ? 'kunyomi' : 'meanings';
+                    $current_level_model->setInputMode($nextMode);
                     $message['type'] = 'success';
                     $message['value'] = 'Correct!';
                     //
@@ -147,7 +150,7 @@ class KanjiGameController extends Controller
                     }
                 }
                 if ($matches > 0) {
-                    $learned_word_model->increaseTimesRight();
+                    // $learned_word_model->increaseTimesRight();
                     $current_level_model->setInputMode('meanings');
                     $message['type'] = 'success';
                     $message['value'] = 'Correct!';
@@ -159,20 +162,21 @@ class KanjiGameController extends Controller
                 }
                 break;
             case 'meanings':
-                $meanings = \explode(', ', $user_input) ?? [];
+                $meanings = \explode(', ', $current_level['targetWord']['meanings'][0]);
                 // Check the meanings input
-                $correct_meanings = [];
+                $correct_meanings = 0;
                 foreach ($meanings as $index => $meaning) {
-                    $meaning = str_replace('to ', '', $meaning);
-                    if (in_array($meaning, $current_level['targetWord']['meanings'])) {
-                        $learned_word_model->increaseTimesRight();
-                        unset($current_level['targetWord']['meanings'][$index]);
-                        $correct_meanings[] = $meaning;
+                    foreach ($answers as $input_meaning) {
+                        if ($input_meaning == $meaning) {
+                            $learned_word_model->increaseTimesRight();
+                            unset($meanings[$index]);
+                            $correct_meanings++;
+                        }
                     }
                 }
 
-                $current_level_model->increaseScore(count($correct_meanings));
-                if (!count($correct_meanings) > 0) {
+                $current_level_model->increaseScore($correct_meanings);
+                if (!$correct_meanings > 0) {
                     $learned_word_model->increaseTimesWrong();
                     $score = 0;
                     $current_level_model->resetScore();
@@ -198,6 +202,37 @@ class KanjiGameController extends Controller
 
                 break;
         }
-        return \redirect()->route('game.kanji.continue', ['message' => \json_encode($message)]);
+
+
+        $current_level = $game->get_active_level($game_type)->toArray();
+        $current_level['targetWord'] = Kanji::where('id', '=', $current_level['targetWord'])->get()->first()->toArray();
+        $current_level['targetWord']['meanings'] = \unserialize($current_level['targetWord']['meanings']);
+
+
+        $current_level['targetWord']['kunyomi'] = \unserialize($current_level['targetWord']['kunyomi']);
+        $current_level['targetWord']['onyomi'] = \unserialize($current_level['targetWord']['onyomi']);
+
+        $target_word_stats = $user->learned_words()->where('kanji_id', '=', $current_level['targetWord']['id'])->get()->first();
+        $current_level['targetWord']['shouldKnow'] = $target_word_stats->shouldKnow;
+        if ($current_level['inputMode'] === 'kana') {
+            $current_level['inputMode'] = 'onyomi';
+        }
+
+        $remaing_tries = $current_level['targetWord']['timesRight'] - ($current_level['targetWord']['timesWrong'] + env('WORD_DIFFICULTY'));
+
+        return view('kanji-game-player', [
+            'id' => $game->id,
+            'game_type' => $game_type,
+            'dictionary' => \json_decode($current_level['dictionary']),
+            'score' => $current_level['score'] ?? 0,
+            'streak' => $current_level['streak'],
+            'level' => $current_level['level'],
+            'remaining_tries' => $remaing_tries,
+            'topStreak' => $current_level['topStreak'],
+            'topScore' => $current_level['topScore'],
+            'targetWord' => $current_level['targetWord'],
+            'inputMode' => $current_level['inputMode'],
+            'message' => $message
+        ]);
     }
 }
