@@ -43,7 +43,9 @@ class KanjiGameController extends Controller
 
         $target_word_stats = $user->learned_words()->where('kanji_id', '=', $current_level['targetWord']['id'])->get()->first();
         $current_level['targetWord']['shouldKnow'] = $target_word_stats->shouldKnow;
-
+        if ($current_level['inputMode'] === 'kana') {
+            $current_level['inputMode'] = 'onyomi';
+        }
 
 
         return view('kanji-game-player', [
@@ -77,94 +79,125 @@ class KanjiGameController extends Controller
 
         // Import Models
         $user = auth()->user();
-        $game_type = Route::current()->parameter('game_type');
-        $game_id = Route::current()->parameter('game_id');
-        $selected_game = $user->games()->where([['id', '=', $game_id]])->get()->first();
+        $game_type = 'kanji';
 
-        $current_level_model = $selected_game->get_active_level($game_type);
+        $game = $user->games()->where('game_type', '=', $game_type)->orderBy('updated_at', 'desc')->get()->first();
+
+        $current_level_model = $game->get_active_level($game_type);
         $score = (int) $current_level_model->score ?? 0;
         $streak = (int) $current_level_model->streak ?? 0;
 
         // Explode the current level to update attributes
         $current_level = $current_level_model->toArray();
 
-        $game_model = null;
 
-        switch ($game_type) {
-            case 'kanji':
-                $game_model = Kanji::class;
-                break;
-            default:
-            case 'verb':
-                $game_model = Verb::class;
-                break;
-        }
-
-
-        $target_word_model = $game_model::where('id', '=', $current_level['targetWord'])->get()->first();
-        $learned_word_model = $user->learned_words()->where('verb_id', '=', $target_word_model->id)->get()->first();
+        $target_word_model = Kanji::where('id', '=', $current_level['targetWord'])->get()->first();
+        $learned_word_model = $user->learned_words()->where('kanji_id', '=', $target_word_model->id)->get()->first();
 
         $current_level['targetWord'] = $target_word_model->toArray();
-        $level_meanings = \unserialize($current_level['targetWord']['meanings']);
-        $current_level['targetWord']['meanings'] = $level_meanings;
 
-        // Collect Inputs
-        $kana =  $request->get('kana') ?? null;
-        $meanings = \explode(', ', $request->get('meanings')) ?? [];
+        $current_level['targetWord']['meanings'] =  \unserialize($current_level['targetWord']['meanings']);
+        $current_level['targetWord']['onyomi'] =  \unserialize($current_level['targetWord']['onyomi']);
+        $current_level['targetWord']['kunyomi'] =  \unserialize($current_level['targetWord']['kunyomi']);
 
-        // Check the Kana input
-        if ($current_level['inputMode'] === 'kana' && $kana && !$current_level['kana']) {
-            if ($kana === $current_level['targetWord']['politeForm']) {
-                $learned_word_model->increaseTimesRight();
-                $current_level_model->setInputMode('meanings');
-                $message['type'] = 'success';
-                $message['value'] = 'Correct!';
-                //
-            } else {
-                $learned_word_model->increaseTimesWrong();
-                $message['type'] = 'fail';
-                $message['value'] = 'Incorrect! Try Again...';
-            }
-            return \redirect()->route('game.verb.continue', ['game_id' => $game_id, 'game_type' => $game_type, 'message' => \json_encode($message)]);
+        if ($current_level['inputMode'] === 'kana') {
+            $current_level['inputMode'] = 'onyomi';
         }
 
-        // Check the meanings input
-        $correct_meanings = [];
-        foreach ($meanings as $index => $meaning) {
-            $meaning = str_replace('to ', '', $meaning);
-            if (in_array($meaning, $current_level['targetWord']['meanings'])) {
-                $learned_word_model->increaseTimesRight();
-                unset($current_level['targetWord']['meanings'][$index]);
-                $correct_meanings[] = $meaning;
-            }
+        $user_input = $request->get($current_level['inputMode']);
+
+        $answers = \explode(', ', $user_input) ?? [];
+        switch ($current_level['inputMode']) {
+
+            case 'onyomi':
+                $matches = 0;
+                if ($current_level['targetWord']['onyomi'] == []) {
+                    $matches++;
+                }
+                foreach ($current_level['targetWord']['onyomi'] as $option) {
+                    foreach ($answers as $answer) {
+                        if ($answer == $option) {
+                            $matches++;
+                        }
+                    }
+                }
+                if ($matches > 0) {
+                    $learned_word_model->increaseTimesRight();
+                    $current_level_model->setInputMode('kunyomi');
+                    $message['type'] = 'success';
+                    $message['value'] = 'Correct!';
+                    //
+                } else {
+                    $learned_word_model->increaseTimesWrong();
+                    $message['type'] = 'fail';
+                    $message['value'] = 'Incorrect! Try Again...';
+                }
+                break;
+            case 'kunyomi':
+                $matches = 0;
+                if ($current_level['targetWord']['kunyomi'] == []) {
+                    $matches++;
+                }
+
+                foreach ($current_level['targetWord']['kunyomi'] as $option) {
+                    foreach ($answers as $answer) {
+                        if ($answer == $option) {
+                            $matches++;
+                        }
+                    }
+                }
+                if ($matches > 0) {
+                    $learned_word_model->increaseTimesRight();
+                    $current_level_model->setInputMode('meanings');
+                    $message['type'] = 'success';
+                    $message['value'] = 'Correct!';
+                    //
+                } else {
+                    $learned_word_model->increaseTimesWrong();
+                    $message['type'] = 'fail';
+                    $message['value'] = 'Incorrect! Try Again...';
+                }
+                break;
+            case 'meanings':
+                $meanings = \explode(', ', $user_input) ?? [];
+                // Check the meanings input
+                $correct_meanings = [];
+                foreach ($meanings as $index => $meaning) {
+                    $meaning = str_replace('to ', '', $meaning);
+                    if (in_array($meaning, $current_level['targetWord']['meanings'])) {
+                        $learned_word_model->increaseTimesRight();
+                        unset($current_level['targetWord']['meanings'][$index]);
+                        $correct_meanings[] = $meaning;
+                    }
+                }
+
+                $current_level_model->increaseScore(count($correct_meanings));
+                if (!count($correct_meanings) > 0) {
+                    $learned_word_model->increaseTimesWrong();
+                    $score = 0;
+                    $current_level_model->resetScore();
+                    $streak = 0;
+                    $current_level_model->resetStreak();
+                    $message['type'] = 'fail';
+                    $message['value'] = 'Incorrect! ' . $target_word_model->politeForm . ' means to ' . implode(', ', $current_level['targetWord']['meanings']);
+                } else {
+                    $message['type'] = 'success';
+                    $message['value'] = 'Correct! ' . $target_word_model->politeForm . ' means to ' . implode(', ', $current_level['targetWord']['meanings']);
+                    $streak++;
+                }
+                $current_level_model->increaseStreak($streak);
+
+                // check if level needs to be increased
+                // Get new target word
+                $new_target_word_id = $current_level_model->newTargetWord('onyomi');
+                $learned_word_model = $user->learned_words()->where('kanji_id', '=', $new_target_word_id)->get()->first();
+
+                if (!$learned_word_model->timesRight > 0 && !$learned_word_model->timesWrong > 0) {
+                    $message['value'] = 'New Word!' . $target_word_model->politeForm . ' means to ' . implode(', ', $current_level['targetWord']['meanings']);
+                }
+
+                break;
         }
-
-        $current_level_model->increaseScore(count($correct_meanings));
-        if (!count($correct_meanings) > 0) {
-            $learned_word_model->increaseTimesWrong();
-            $score = 0;
-            $current_level_model->resetScore();
-            $streak = 0;
-            $current_level_model->resetStreak();
-            $message['type'] = 'fail';
-            $message['value'] = 'Incorrect! ' . $target_word_model->politeForm . ' means to ' . implode(', ', $level_meanings);
-        } else {
-            $message['type'] = 'success';
-            $message['value'] = 'Correct! ' . $target_word_model->politeForm . ' means to ' . implode(', ', $level_meanings);
-            $streak++;
-        }
-        $current_level_model->increaseStreak($streak);
-
-        // check if level needs to be increased
-        // Get new target word
-        $new_target_word_id = $current_level_model->newTargetWord();
-        $learned_word_model = $user->learned_words()->where('verb_id', '=', $new_target_word_id)->get()->first();
-
-        if (!$learned_word_model->timesRight > 0 && !$learned_word_model->timesWrong > 0) {
-            $message['value'] = 'New Word!' . $target_word_model->politeForm . ' means to ' . implode(', ', $level_meanings);
-        }
-
-
-        return \redirect()->route('game.verb.continue', ['game_id' => $game_id, 'game_type' => $game_type, 'message' => \json_encode($message)]);
+        return \redirect()->route('game.kanji.continue', ['message' => \json_encode($message)]);
     }
 }
