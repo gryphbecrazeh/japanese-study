@@ -42,12 +42,10 @@ class Level extends Model
     public function setTopScore()
     {
         $this->topScore = $this->score;
-        $this->save();
     }
     public function setTopStreak()
     {
         $this->topStreak = $this->streak;
-        $this->save();
     }
     public function increaseScore(int $int)
     {
@@ -55,18 +53,14 @@ class Level extends Model
         if ($this->score > $this->topScore) {
             $this->setTopScore();
         }
-        $this->save();
-        return null;
     }
     public function resetScore()
     {
         $this->score = 0;
-        $this->save();
     }
     public function increaseStreak()
     {
         $this->streak++;
-        $this->save();
         if ($this->streak > $this->topStreak) {
             $this->setTopStreak();
         }
@@ -74,8 +68,8 @@ class Level extends Model
     public function resetStreak()
     {
         $this->streak = 0;
-        $this->save();
     }
+
     public function newTargetWord($input_mode = 'kana')
     {
         $user = auth()->user();
@@ -88,13 +82,11 @@ class Level extends Model
     public function setTargetWord($id)
     {
         $this->targetWord = $id;
-        $this->save();
         return $id;
     }
     public function setInputMode(string $mode)
     {
         $this->inputMode = $mode;
-        $this->save();
         return $mode;
     }
     public function setUserInput($target, $value)
@@ -102,7 +94,6 @@ class Level extends Model
         $updatedInput =  $this->userInput;
         $updatedInput[$target] = $value;
         $this->userInput = $updatedInput;
-        $this->save();
         return $this->userInput;
     }
     public function clearUserInput()
