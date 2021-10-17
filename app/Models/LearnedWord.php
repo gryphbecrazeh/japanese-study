@@ -19,7 +19,10 @@ class LearnedWord extends Model
         'verb_id',
         'kanji_id',
         'user_id',
-        'game_type'
+        'game_type',
+        'shouldKnow',
+        'timesRight',
+        'timesWrong'
     ];
 
     /**
@@ -45,7 +48,7 @@ class LearnedWord extends Model
         if ($this->timesRight > ($this->timesWrong + env('WORD_DIFFICULTY'))) {
             $this->shouldKnow = true;
         }
-        $this->getVerbObject()->increaseTimesRight();
+        $this->get_global_word_object()->increaseTimesRight();
         $this->save();
     }
     public function increaseTimesWrong()
@@ -54,15 +57,45 @@ class LearnedWord extends Model
         if ($this->timesRight < ($this->timesWrong + env('WORD_DIFFICULTY'))) {
             $this->shouldKnow = false;
         }
-        $this->getVerbObject()->increaseTimesWrong();
+        $this->get_global_word_object()->increaseTimesWrong();
         $this->save();
     }
-    public function getVerbObject()
+    public function get_global_word_object()
     {
-        $verbObject = Verb::where('id', '=', $this->verb_id)->limit(1)->get()->first();
-        if (!$verbObject) {
-            $verbObject = Kanji::where('id', '=', $this->kanji_id)->limit(1)->get()->first();
+        $word_model = null;
+        $word_id = null;
+        switch ($this->game_type) {
+            case 'kanji':
+                $word_model = Kanji::class;
+                $word_id = 'kanji_id';
+                break;
+            case 'verb':
+                $word_model = Verb::class;
+                $word_id = 'verb_id';
+                break;
         }
-        return $verbObject;
+        return $word_model::where('id', '=', $this[$word_id])->limit(1)->get()->first();
+    }
+
+    public function get_assembled_word()
+    {
+        $word = collect($this->get_global_word_object())->toArray();
+        $word['game_types'] = $this->game_type;
+        $word['shouldKnow'] = $this->shouldKnow;
+        $word['timesRight'] = $this->timesRight;
+        $word['timesWrong'] = $this->timesWrong;
+
+        $word['meanings'] = \unserialize($word['meanings']);
+
+        switch ($this->game_type) {
+            case 'kanji':
+                $word['kunyomi'] = \unserialize($word['kunyomi']);
+                $word['onyomi'] = \unserialize($word['onyomi']);
+                break;
+            case 'verb':
+                $word['kanji'] = \unserialize($word['kanji']);
+                break;
+        }
+        return $word;
     }
 }
