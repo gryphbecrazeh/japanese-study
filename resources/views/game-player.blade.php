@@ -26,7 +26,8 @@
                                     <p>
                                         {{ $inputMode === 'kana' ? 'Enter the following' : 'Translate the following' }}
                                     </p>
-                                    <p class="text-6xl" data-controller="meaning">{{ $targetWord['kanji']['word'] }}
+                                    <p class="text-6xl" data-controller="meaning">
+                                        {{ $targetWord['kanji']['word'] }}
                                     </p>
                                     <p class="text-3xl">
                                         {{ $targetWord['shouldKnow'] ? 'You should know this...' : $targetWord['politeForm'] }}
@@ -34,8 +35,7 @@
                                 </div>
                             </div>
                         </div>
-                        <form action="{{ route('game.verb.post', ['game_type' => $game_type, 'game_id' => $id]) }}"
-                            method="POST">
+                        <form action="{{ route('game.verb.post') }}" method="POST">
                             @csrf
                             <div class="w-full flex justify-center items-center">
                                 <div class="flex gap-2 justify-around bg-fog-100 rounded">
