@@ -1,6 +1,9 @@
 <x-wrapper>
     @isset($message)
-        <x-MessageContainer :message="$message ?? ''" />
+        <x-MessageContainer>
+            <x-Message message="{!! json_encode($message) !!}" />
+
+        </x-MessageContainer>
 
     @endisset
     <x-layout.container>
@@ -22,6 +25,9 @@
                                     <p>Best Streak: {{ $topStreak }}</p>
                                     <p>Word Count:{{ count($dictionary) }}</p>
                                     <p>Mode: {{ $inputMode }}</p>
+                                    @if ($targetWord['shouldKnow'] && isset($remaining_tries) && $remaining_tries > -1)
+                                        <p>Remaining Tries: {{ $remaining_tries }}</p>
+                                    @endif
                                 </div>
                                 <div class=" flex flex-col justify-center text-center text-gray-100 bold">
                                     <p>
@@ -52,8 +58,7 @@
                                 </div>
                             </div>
                         </div>
-                        <form action="{{ route('game.kanji.post', ['game_type' => $game_type, 'game_id' => $id]) }}"
-                            method="POST">
+                        <form action="{{ route('game.kanji.post') }}" method="POST">
                             @csrf
                             <div class="w-full flex justify-center items-center">
                                 <div class="flex gap-2 justify-around bg-fog-100 rounded">
