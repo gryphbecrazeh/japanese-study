@@ -21,8 +21,11 @@ class GameController extends Controller
     {
         // Figure out the issue with word aggregation, why is it automatically failing and I have to refresh repeatedly to progress
         $user = auth()->user();
-        $game_type = Route::current()->parameter('game_type');
+        // $game_type = Route::current()->parameter('game_type');
+        // $game_id = Route::current()->parameter('game_id');
+        $game_type = $request->query('game_type');
         $game_id = Route::current()->parameter('game_id');
+        
         $games = $user->games()->where('game_type', '=', $game_type)->orderBy('updated_at', 'desc')->get();
         $message = $request['message'] ?? null;
 

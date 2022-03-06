@@ -17011,12 +17011,17 @@ application.load(Object(stimulus_webpack_helpers__WEBPACK_IMPORTED_MODULE_1__["d
 var map = {
 	"./Game.js": "./resources/js/controllers/Game.js",
 	"./Verb.js": "./resources/js/controllers/Verb.js",
+	"./application-controller.js": "./resources/js/controllers/application-controller.js",
 	"./autokana-controller.js": "./resources/js/controllers/autokana-controller.js",
+	"./display-controller.js": "./resources/js/controllers/display-controller.js",
 	"./flexible-controller.js": "./resources/js/controllers/flexible-controller.js",
 	"./game-controller.js": "./resources/js/controllers/game-controller.js",
 	"./meaning-controller.js": "./resources/js/controllers/meaning-controller.js",
+	"./message-controller.js": "./resources/js/controllers/message-controller.js",
 	"./nav-controller.js": "./resources/js/controllers/nav-controller.js",
-	"./report-controller.js": "./resources/js/controllers/report-controller.js"
+	"./report-controller.js": "./resources/js/controllers/report-controller.js",
+	"./submit-controller.js": "./resources/js/controllers/submit-controller.js",
+	"./visibility-controller.js": "./resources/js/controllers/visibility-controller.js"
 };
 
 
@@ -17392,6 +17397,110 @@ var Verb = function Verb(_ref) {
 
 /***/ }),
 
+/***/ "./resources/js/controllers/application-controller.js":
+/*!************************************************************!*\
+  !*** ./resources/js/controllers/application-controller.js ***!
+  \************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return _default; });
+/* harmony import */ var stimulus__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! stimulus */ "./node_modules/stimulus/index.js");
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+
+
+var _default = /*#__PURE__*/function (_Controller) {
+  _inherits(_default, _Controller);
+
+  var _super = _createSuper(_default);
+
+  function _default() {
+    _classCallCheck(this, _default);
+
+    return _super.apply(this, arguments);
+  }
+
+  _createClass(_default, [{
+    key: "dispatch",
+    value: function dispatch(eventName) {
+      var _ref = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
+          _ref$target = _ref.target,
+          target = _ref$target === void 0 ? this.element : _ref$target,
+          _ref$detail = _ref.detail,
+          detail = _ref$detail === void 0 ? {} : _ref$detail,
+          _ref$bubbles = _ref.bubbles,
+          bubbles = _ref$bubbles === void 0 ? true : _ref$bubbles,
+          _ref$cancelable = _ref.cancelable,
+          cancelable = _ref$cancelable === void 0 ? true : _ref$cancelable;
+
+      var type = "".concat(this.identifier, ":").concat(eventName);
+      var event = new CustomEvent(type, {
+        detail: detail,
+        bubbles: bubbles,
+        cancelable: cancelable
+      });
+      target.dispatchEvent(event);
+      return event;
+    }
+  }, {
+    key: "observeMutations",
+    value: function observeMutations(callback) {
+      var _this = this;
+
+      var target = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this.element;
+      var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {
+        childList: true,
+        subtree: true
+      };
+      var observer = new MutationObserver(function (mutations) {
+        observer.disconnect();
+        Promise.resolve().then(start);
+        callback.call(_this, mutations);
+      });
+
+      function start() {
+        if (target.isConnected) observer.observe(target, options);
+      }
+
+      start();
+    }
+  }, {
+    key: "pageIsTurbolinksPreview",
+    get: function get() {
+      return document.documentElement.hasAttribute("data-turbolinks-preview");
+    }
+  }]);
+
+  return _default;
+}(stimulus__WEBPACK_IMPORTED_MODULE_0__["Controller"]);
+
+
+
+/***/ }),
+
 /***/ "./resources/js/controllers/autokana-controller.js":
 /*!*********************************************************!*\
   !*** ./resources/js/controllers/autokana-controller.js ***!
@@ -17534,6 +17643,17 @@ var _default = /*#__PURE__*/function (_Controller) {
 
   return _default;
 }(stimulus__WEBPACK_IMPORTED_MODULE_0__["Controller"]);
+
+
+
+/***/ }),
+
+/***/ "./resources/js/controllers/display-controller.js":
+/*!********************************************************!*\
+  !*** ./resources/js/controllers/display-controller.js ***!
+  \********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
 
 
 
@@ -17909,6 +18029,17 @@ _default.kanjiCache = [];
 
 /***/ }),
 
+/***/ "./resources/js/controllers/message-controller.js":
+/*!********************************************************!*\
+  !*** ./resources/js/controllers/message-controller.js ***!
+  \********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+
+
+/***/ }),
+
 /***/ "./resources/js/controllers/nav-controller.js":
 /*!****************************************************!*\
   !*** ./resources/js/controllers/nav-controller.js ***!
@@ -18057,6 +18188,151 @@ var _default = /*#__PURE__*/function (_Controller) {
 _default.values = {
   path: String
 };
+
+
+/***/ }),
+
+/***/ "./resources/js/controllers/submit-controller.js":
+/*!*******************************************************!*\
+  !*** ./resources/js/controllers/submit-controller.js ***!
+  \*******************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return _default; });
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _application_controller__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./application-controller */ "./resources/js/controllers/application-controller.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+// 理
+
+
+
+var _default = /*#__PURE__*/function (_ApplicationControlle) {
+  _inherits(_default, _ApplicationControlle);
+
+  var _super = _createSuper(_default);
+
+  function _default() {
+    _classCallCheck(this, _default);
+
+    return _super.apply(this, arguments);
+  }
+
+  _createClass(_default, [{
+    key: "connect",
+    value: function connect() {
+      console.log('connected');
+    }
+  }, {
+    key: "handleSubmit",
+    value: function () {
+      var _handleSubmit = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(e) {
+        var _this = this;
+
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                axios__WEBPACK_IMPORTED_MODULE_2___default.a.post(this.urlValue, {
+                  id: this.idValue,
+                  type: this.typeValue,
+                  value: this.inputTarget.value
+                }).then(function (res) {
+                  return _this.success(res);
+                })["catch"](function (err) {
+                  return _this.error(err);
+                });
+
+              case 3:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function handleSubmit(_x) {
+        return _handleSubmit.apply(this, arguments);
+      }
+
+      return handleSubmit;
+    }()
+  }, {
+    key: "success",
+    value: function success(response) {
+      console.log('submitting');
+      console.log(this.urlValue);
+      console.log(response);
+      this.dispatch('update', _objectSpread({}, response.data));
+    }
+  }, {
+    key: "error",
+    value: function error(_error) {
+      console.log(_error);
+      this.dispatch('error', _objectSpread({}, _error));
+    }
+  }]);
+
+  return _default;
+}(_application_controller__WEBPACK_IMPORTED_MODULE_1__["default"]);
+
+_default.targets = ["input"];
+_default.values = {
+  id: String,
+  type: String,
+  url: String
+};
+
+
+/***/ }),
+
+/***/ "./resources/js/controllers/visibility-controller.js":
+/*!***********************************************************!*\
+  !*** ./resources/js/controllers/visibility-controller.js ***!
+  \***********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
 
 
 /***/ }),

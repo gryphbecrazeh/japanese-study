@@ -15,7 +15,7 @@
                         data-controller="autokana game report" {{-- data-report-path-value="{{ route('report', ['kanji_id' => $targetWord['id']]) }}"> --}}
                         data-report-path-value="http://test.local">
 
-                        <div class="flex flex-col mb-8">
+                        <div data-controller="display" class="flex flex-col mb-8">
                             <div class="top flex w-full flex-col items-center justify-center">
                                 <div class="notification" id="notification-container"></div>
                                 <div class="flex gap-2 text-gray-100 bold">
@@ -58,11 +58,12 @@
                                 </div>
                             </div>
                         </div>
-                        <form action="{{ route('game.kanji.post') }}" method="POST">
-                            @csrf
+                        {{-- <form data-controller="submit" action="{{ route('game.kanji.post') }}" method="POST"> --}}
+                            <form data-controller="submit" data-action="submit#handleSubmit" data-submit-url-value="{{route('game.api')}}" data-submit-type-value="{{$game_type}}}" data-submit-id-value="{{$id}}">
+                                @csrf
                             <div class="w-full flex justify-center items-center">
                                 <div class="flex gap-2 justify-around bg-fog-100 rounded">
-                                    <x-element.input name="{{ $inputMode }}" type="text"
+                                    <x-element.input data-submit-target="input" name="{{ $inputMode }}" type="text"
                                         id="{{ $inputMode === 'onyomi' || $inputMode === 'kunyomi' ? 'autokana' : 'standard' }}"
                                         class="text-white text-center placeholder-center rounded-l game-input bg-transparent p-2 input w-60 h-full placeholder-white"
                                         placeholder="{{ $inputMode === 'onyomi' || $inputMode === 'kunyomi' ? 'Enter the verb...' : 'Translate Below' }}" />

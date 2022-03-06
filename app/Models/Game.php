@@ -14,6 +14,7 @@ class Game extends Model
     use HasFactory;
 
     public $game_type;
+    public $proficiency;
     /**
      * The attributes that are mass assignable
      *
@@ -41,7 +42,7 @@ class Game extends Model
      *
      * @return never
      */
-    public function get_active_level(String $game_type)
+    public function get_active_level(String $game_type, String $proficiency = null)
     {
         $user = auth()->user();
         $levels = $this->levels()->orderBy('updated_at', 'desc')->get();
@@ -56,7 +57,11 @@ class Game extends Model
                 $new_words = Verb::inRandomOrder()->limit(10)->get()->toArray();
             }
             if ($game_type === 'kanji') {
-                $new_words = Kanji::inRandomOrder()->limit(10)->get()->toArray();
+                $search_terms = [];
+                if (isset($proficiency)) {
+                    \array_push($search_terms, ['proficiency', $proficiency]);
+                }
+                $new_words = Kanji::where($search_terms)->inRandomOrder()->limit(10)->get()->toArray();
             }
 
 
@@ -103,9 +108,74 @@ class Game extends Model
      *
      * @return never
      */
-    public function create_level()
+    public function create_level(bool $include_learned_words = false, String $proficiency = null)
     {
-        dd($this->id);
+        $user = auth()->user();
+        $levels = $this->levels()->orderBy('updated_at', 'desc')->get();
+        $previous_level_words = [];
+        $learned_words = [];
+        $new_words = [];
+        $dictionary = [];
+
+        /**
+         * Grab all words from previous levels
+         * maybe grab learned words
+         * filter learned words from previous level words
+         * 
+         * grab new words
+         * merge together new and learned words array ( which may be empty )
+         * grab 3 words from the merged words
+         * find which of the merged words are new and add them to the user's learned words
+         * 
+         * 
+         * 
+         * 
+         */
+        $previous_level_words = \array_unique($levels->flatmap(function ($item) {
+            if (isset($item->dictionary)) {
+                return \json_decode($item->dictionary);
+            }
+            return [];
+        })->toArray());
+
+        if ($include_learned_words) {
+            $learned_words = $user->learned_words()->where('game_type', '=', $this->game_type)->get()->toArray();
+            dd($learned_words);
+        }
+        dd($previous_level_words);
+
+        if ($this->game_type === 'verb') {
+            $new_words = Verb::inRandomOrder()->limit(3)->get()->toArray();
+        }
+        if ($this->game_type === 'kanji') {
+            $search_terms = [];
+            if (isset($proficiency)) {
+                \array_push($search_terms, ['proficiency', $proficiency]);
+            }
+            $new_words = Kanji::where($search_terms)->inRandomOrder()->limit(3)->get()->toArray();
+        }
+
+
+        foreach ($new_words as $word) {
+            $word['game_type'] = $this->game_type;
+            $learned_words[] = $user->add_word($word);
+        }
+
+        // Fill
+        // 'dictionary',
+        $dictionary = Arr::random($learned_words, 10);
+        $dictionary_ids = collect($dictionary)->map(function ($word) {
+            return $word[$this->game_type . '_id'];
+        })->toArray();
+        // 'streak',
+        // 'topStreak',
+        // 'score',
+        // 'topScore'
+        $target_word = collect(Arr::random($dictionary_ids, 1))->first();
+
+        $current_level = Level::create(['game_id' => $this->id, 'dictionary' => \json_encode($dictionary_ids), 'targetWord' => $target_word, 'inputMode' => $this->game_type === 'kanji' ?  'onyomi' : 'kana']);
+
+        return $current_level;
     }
     /**
      *

@@ -197,6 +197,11 @@ Guess the missing kanji character
 
 --
 
+## Ideas
+
+-   Input, on key press space, add word to input group, click to remove meaning, click to edit, timeout to auto-add/typing automatically adds ( need to figure out best procedure for answering quickly )
+-   add buttons that open modals to show new words/ information regarding previous word (!) (+) (-), + or - depending on whether the last word was correct or not, add ability to report word/ translation
+
 ## Kanji challenge, practice all words that share a single kanji character
 
 helps associate the actual meaning of the kanji with the related words, and make more kanji more familiar and easier to understand when seen in unknown words
