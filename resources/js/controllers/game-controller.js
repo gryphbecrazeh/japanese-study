@@ -27,4 +27,7 @@ export default class extends Controller
 
         } )
     }
+    updateGame() {
+        
+    }
 }
