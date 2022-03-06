@@ -42,67 +42,76 @@ class Game extends Model
      *
      * @return never
      */
-    public function get_active_level(String $game_type, String $proficiency = null)
+    public function get_active_level(String $game_type, String $proficiency = null, String $user_id = null)
     {
-        $user = auth()->user();
-        $levels = $this->levels()->orderBy('updated_at', 'desc')->get();
-        $current_level = null;
-        $learned_words = [];
-        $dictionary = [];
+        $user = null;
 
-        $learned_words = $user->learned_words()->where('game_type', '=', $game_type)->get()->toArray();
-
-        if (!count($learned_words) > 0) {
-            if ($game_type === 'verb') {
-                $new_words = Verb::inRandomOrder()->limit(10)->get()->toArray();
-            }
-            if ($game_type === 'kanji') {
-                $search_terms = [];
-                if (isset($proficiency)) {
-                    \array_push($search_terms, ['proficiency', $proficiency]);
+        if(!is_null($user_id)) {
+            $user = User::where('id','=',$user_id)->first() ?? null;
+        }
+        if(is_null($user) && !is_null(auth()->user())) {
+            $user = auth()->user();
+        }
+        if(!is_null($user)) {
+            $levels = $this->levels()->orderBy('updated_at', 'desc')->get();
+            $current_level = null;
+            $learned_words = [];
+            $dictionary = [];
+    
+            $learned_words = $user->learned_words()->where('game_type', '=', $game_type)->get()->toArray();
+            if (!count($learned_words) > 0) {
+                if ($game_type === 'verb') {
+                    $new_words = Verb::inRandomOrder()->limit(10)->get()->toArray();
                 }
-                $new_words = Kanji::where($search_terms)->inRandomOrder()->limit(10)->get()->toArray();
+                if ($game_type === 'kanji') {
+                    $search_terms = [];
+                    if (isset($proficiency)) {
+                        \array_push($search_terms, ['proficiency', $proficiency]);
+                    }
+                    $new_words = Kanji::where($search_terms)->inRandomOrder()->limit(10)->get()->toArray();
+                }
+    
+    
+                foreach ($new_words as $word) {
+                    $word['game_type'] = $game_type;
+                    $learned_words[] = $user->add_word($word);
+                }
+                // $learned_words = $user->learned_words()->where('gametype', '=', $game_type)->get()->toArray();
             }
-
-
-            foreach ($new_words as $word) {
-                $word['game_type'] = $game_type;
-                $learned_words[] = $user->add_word($word);
+    
+    
+            // If there are no levels create a level
+            if (!count($levels) > 0) {
+                // Fill
+                // 'dictionary',
+                $dictionary = Arr::random($learned_words, 10);
+                $dictionary_ids = collect($dictionary)->map(function ($word) use ($game_type) {
+                    return $word[$game_type . '_id'];
+                })->toArray();
+                // 'streak',
+                // 'topStreak',
+                // 'score',
+                // 'topScore'
+                $target_word = collect(Arr::random($dictionary_ids, 1))->first();
+    
+                $current_level = Level::create(['game_id' => $this->id, 'dictionary' => \json_encode($dictionary_ids), 'targetWord' => $target_word, 'inputMode' => $game_type === 'kanji' ?  'onyomi' : 'kana']);
             }
-            // $learned_words = $user->learned_words()->where('gametype', '=', $game_type)->get()->toArray();
-        }
-
-
-        // If there are no levels create a level
-        if (!count($levels) > 0) {
-            // Fill
-            // 'dictionary',
-            $dictionary = Arr::random($learned_words, 10);
-            $dictionary_ids = collect($dictionary)->map(function ($word) use ($game_type) {
-                return $word[$game_type . '_id'];
-            })->toArray();
-            // 'streak',
-            // 'topStreak',
-            // 'score',
-            // 'topScore'
-            $target_word = collect(Arr::random($dictionary_ids, 1))->first();
-
-            $current_level = Level::create(['game_id' => $this->id, 'dictionary' => \json_encode($dictionary_ids), 'targetWord' => $target_word, 'inputMode' => $game_type === 'kanji' ?  'onyomi' : 'kana']);
-        }
-        // Current level wasn't established already, grab the first available level,
-        // add logic here to see if a new level needs to be created and a new dictionary needs to be made
-        if (!$current_level) {
-            $current_level = $levels->first();
-            $dictionary = \json_decode($current_level->dictionary);
-            if (!$current_level->targetWord) {
-                $current_level = $current_level->toArray();
-                $target_word = collect(Arr::random($dictionary, 1))->first();
-                $current_level['targetWord'] = $target_word;
-                $this->levels()->where('id', '=', $current_level['id'])->get()->first()->update($current_level);
-                $current_level = $this->levels()->where('id', '=', $current_level['id'])->get()->first();
+            // Current level wasn't established already, grab the first available level,
+            // add logic here to see if a new level needs to be created and a new dictionary needs to be made
+            if (!$current_level) {
+                $current_level = $levels->first();
+                $dictionary = \json_decode($current_level->dictionary);
+                if (!$current_level->targetWord) {
+                    $current_level = $current_level->toArray();
+                    $target_word = collect(Arr::random($dictionary, 1))->first();
+                    $current_level['targetWord'] = $target_word;
+                    $this->levels()->where('id', '=', $current_level['id'])->get()->first()->update($current_level);
+                    $current_level = $this->levels()->where('id', '=', $current_level['id'])->get()->first();
+                }
             }
+            return $current_level;
+    
         }
-        return $current_level;
     }
     /**
      *
