@@ -59,7 +59,7 @@
                             </div>
                         </div>
                         {{-- <form data-controller="submit" action="{{ route('game.kanji.post') }}" method="POST"> --}}
-                            <form data-controller="submit" data-action="submit#handleSubmit" data-submit-url-value="{{route('game.api')}}" data-submit-type-value="{{$game_type}}}" data-submit-id-value="{{$id}}">
+                            <form data-controller="submit" data-action="submit#handleSubmit" data-submit-url-value="{{route('game.api')}}" data-submit-type-value="{{$game_type}}" data-submit-id-value="{{$id}}">
                                 @csrf
                             <div class="w-full flex justify-center items-center">
                                 <div class="flex gap-2 justify-around bg-fog-100 rounded">
