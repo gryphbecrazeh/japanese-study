@@ -33,10 +33,7 @@ class KanjiGameController extends Controller
             $game = Game::create(['user_id' => $user->id, 'game_type' => $this->game_type]);
         }
 
-
         $current_level = $game->get_active_level($this->game_type)->toArray();
-
-
         $current_level['targetWord'] = $user->learned_words()->where('kanji_id', '=', $current_level['targetWord'])->first()->get_assembled_word();
 
         if ($current_level['inputMode'] === 'kana') {
@@ -236,13 +233,11 @@ class KanjiGameController extends Controller
         $game = Game::where('id', $request['id'])->first();
         // [2021-12-26 05:16:46] local.DEBUG: {"id":3,"user_id":1,"game_type":"kanji","created_at":"2021-10-22T12:29:10.000000Z","updated_at":"2021-10-22T12:29:10.000000Z","closed":null}  
         $user = User::where('id', $game->user_id)->first();
-        $current_level_model = $game->get_active_level($this->game_type, 'n5');
+        $current_level_model = $game->get_active_level($this->game_type, 'n5', $game->user_id);
         Log::debug($current_level_model);
-        dd('do not proceed');
         $target_word_model = Kanji::where('id', '=', $current_level_model->targetWord)->first();
         $learned_word = $user->learned_words()->where('kanji_id', '=', $current_level_model->targetWord)->first();
         $message = ['type' => '', 'message' => ''];
-
 
         $current_level = $current_level_model->toArray();
         $current_level['targetWord'] = $learned_word->get_assembled_word();
@@ -345,7 +340,8 @@ class KanjiGameController extends Controller
         }
 
         $current_level_model->save();
-        $current_level = $game->get_active_level($this->game_type)->toArray();
+
+        $current_level = $game->get_active_level($this->game_type, 'n5', $game->user_id)->toArray();
 
         $current_level['targetWord'] = $user->learned_words()->where('kanji_id', '=', $current_level['targetWord'])->first()->get_assembled_word();
 
